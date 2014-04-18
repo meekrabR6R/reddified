@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Reddified</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <color name="reddit_blue">#cee3f8</color>
+    <color name="white">#FFFFFF</color>
+
+    <string name="title_activity_signin">SigninActivity</string>
+
+</resources>
