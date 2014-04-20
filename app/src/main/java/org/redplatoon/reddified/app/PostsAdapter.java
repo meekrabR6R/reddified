@@ -19,33 +19,47 @@ import java.util.ArrayList;
  */
 public class PostsAdapter extends ArrayAdapter<Post> {
 
-    private final Context context;
-    private final ArrayList<Post> posts;
+    private LayoutInflater mLayoutInflater;
+    private final Context mContext;
+    private ArrayList<Post> mPosts = new ArrayList<Post>();
+    private PostUpdater mPostUpdater;
+    private int mCount;
 
-    public PostsAdapter(Context context, ArrayList<Post> posts) {
-        super(context, R.layout.post, posts);
-        this.context = context;
-        this.posts = posts;
-        System.out.println("SIZE 2: " + this.posts.size());
+    public interface  PostUpdater {
+        public void updatePosts();
+    }
+
+    public PostsAdapter(PostUpdater postUpdater, Context context) {
+        super(context, R.layout.post);
+        mContext = context;
+        mLayoutInflater = LayoutInflater.from(mContext);
+        mPostUpdater = postUpdater;
+        mPostUpdater.updatePosts();
     }
 
     @Override
+    public int getCount() { return mPosts.size();}
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context
+
+        if (position + 10 == mPosts.size())
+            mPostUpdater.updatePosts();
+
+        mLayoutInflater = (LayoutInflater) mContext
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View post = inflater.inflate(R.layout.post, parent, false);
+        View post = mLayoutInflater.inflate(R.layout.post, parent, false);
 
-        Post currPost = posts.get(position);
+        Post currPost = mPosts.get(position);
+        System.out.println("CURR: " + currPost.title);
         TextView titleView = (TextView) post.findViewById(R.id.title);
         titleView.setText(currPost.title);
 
-        /*
         TextView authorView = (TextView) post.findViewById(R.id.author);
         authorView.setText(currPost.author);
-        */
+
         ImageView imageView = (ImageView) post.findViewById(R.id.thumb);
-        System.out.println("CURRPOST: " + currPost.thumbnail);
         if (currPost.thumbnail.length() > 7) {
             Ion.with(imageView)
                     .placeholder(R.drawable.alien_thumb)
@@ -53,5 +67,11 @@ public class PostsAdapter extends ArrayAdapter<Post> {
                     .load(currPost.thumbnail);
         }
         return post;
+    }
+
+    public void update(ArrayList<Post> posts, int count) {
+        mCount = count;
+        mPosts.addAll(posts);
+        notifyDataSetChanged();
     }
 }

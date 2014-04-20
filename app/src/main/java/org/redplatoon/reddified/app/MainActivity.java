@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -26,16 +27,23 @@ import java.util.ArrayList;
 import java.util.Map;
 
 
-public class MainActivity extends ListActivity {
+public class MainActivity extends ListActivity implements PostsAdapter.PostUpdater {
 
     public static final String USER_CREDS = "ReddifiedUser";
-    private SharedPreferences settings;
+
+    private PostsAdapter mPostsAdapter;
+    private String mCount = String.valueOf(0);
+    private String mAfter = "";
+    private SharedPreferences mSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        settings = getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
-        makePosts();
+        mSettings = getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
+        //System.out.println("DOODA! " + postsAdapter.getCount());
+        setListAdapter(new PostsAdapter(this, getApplicationContext()));
+        mPostsAdapter = (PostsAdapter) getListAdapter();
+        //updatePosts();
     }
 
     @Override
@@ -58,10 +66,12 @@ public class MainActivity extends ListActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void makePosts() {
+    public void updatePosts() {
         final ArrayList<Post> posts = new ArrayList<Post>();
 
         Ion.with(getApplicationContext(), "http://www.reddit.com/.json")
+                .addQuery("count", mCount)
+                .addQuery("after", mAfter)
                 .asJsonObject()
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
@@ -89,6 +99,7 @@ public class MainActivity extends ListActivity {
                             post.id = child.getAsJsonObject().get("data").getAsJsonObject().get("id").toString();
                             post.subreddit = child.getAsJsonObject().get("data").getAsJsonObject().get("subreddit").toString();
                             post.permaLink = child.getAsJsonObject().get("data").getAsJsonObject().get("permalink").toString();
+                            post.name = child.getAsJsonObject().get("data").getAsJsonObject().get("name").toString();
 
                             post.ups = child.getAsJsonObject().get("data").getAsJsonObject().get("ups").getAsInt();
                             post.downs = child.getAsJsonObject().get("data").getAsJsonObject().get("downs").getAsInt();
@@ -102,7 +113,11 @@ public class MainActivity extends ListActivity {
 
                             posts.add(post);
                         }
-                        setListAdapter(new PostsAdapter(getApplicationContext(), posts));
+
+                        mAfter = result.getAsJsonObject().get("data").getAsJsonObject().get("after").toString();
+                        int tempCount = Integer.parseInt(mCount);
+                        tempCount += posts.size() - 1;
+                        mPostsAdapter.update(posts, tempCount);
                     }
                 });
     }
