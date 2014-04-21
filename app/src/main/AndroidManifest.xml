@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="org.redplatoon.reddified.app.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,7 +21,7 @@
         <activity
             android:name="org.redplatoon.reddified.app.SigninActivity"
             android:label="@string/title_activity_signin"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@android:style/Theme.Holo.NoActionBar" >
         </activity>
     </application>
 

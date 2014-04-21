@@ -54,7 +54,7 @@ public class PostsAdapter extends ArrayAdapter<Post> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if ((position + 10 == mPosts.size()) && !mAfter.equals("ull"))
+        if ((position + 10 == mPosts.size()) && !mAfter.equals("END"))
             mPostUpdater.updatePosts(mAfter);
 
         mLayoutInflater = (LayoutInflater) mContext

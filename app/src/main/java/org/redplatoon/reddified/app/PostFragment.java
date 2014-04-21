@@ -32,29 +32,19 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
     private PostsAdapter mPostsAdapter;
     private String mCount = String.valueOf(0);
     private String mUrl;
+    private String mFilter;
     private SharedPreferences mSettings;
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private OnFragmentInteractionListener mListener;
 
-    // TODO: Rename and change types of parameters
-    public static PostFragment newInstance(String param1, String param2) {
+    public static PostFragment newInstance(String filter) {
+        System.out.println("FILTER: " + filter);
         PostFragment fragment = new PostFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString("filter", filter);
         fragment.setArguments(args);
+//        fragment.updatePosts(filter);
         return fragment;
     }
-
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -67,11 +57,11 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mFilter = getArguments().getString("filter");
+        } else {
+            mFilter = "";
         }
-
-        mUrl = String.format(getString(R.string.reddit_url));
+        mUrl = String.format(getString(R.string.reddit_url))+mFilter+".json";
 
         //mSettings = getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
         setListAdapter(new PostsAdapter(this, getActivity()));
@@ -127,8 +117,9 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
 
         final ArrayList<Post> posts = new ArrayList<Post>();
         Ion.with(getActivity())
-                .load(mUrl+".json")
+                .load(mUrl)
                 .addQuery("after", after)
+                .setLogging("MyLogs", Log.DEBUG)
                 .asJsonObject()
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
@@ -172,14 +163,26 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
                             posts.add(post);
                         }
 
-                        String newAfter = result
-                                .getAsJsonObject()
-                                .get("data")
-                                .getAsJsonObject()
-                                .get("after")
-                                .toString()
-                                .replaceAll("^\\p{Graph}", "")
-                                .replaceAll("\"", "");
+                        JsonElement preRes = result
+                                            .getAsJsonObject()
+                                            .get("data")
+                                            .getAsJsonObject()
+                                            .get("after");
+
+                        String newAfter = "END";
+                        System.out.println("PRERES: " + preRes.toString());
+                        if(preRes != null) {
+                            newAfter = result
+                                       .getAsJsonObject()
+                                       .get("data")
+                                       .getAsJsonObject()
+                                       .get("after")
+                                       .toString()
+                                       .replaceAll("^\\p{Graph}", "")
+                                       .replaceAll("\"", "");
+                        }
+
+
 
                         int tempCount = Integer.parseInt(mCount);
                         tempCount += posts.size();

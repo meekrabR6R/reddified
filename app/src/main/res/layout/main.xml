@@ -5,10 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <fragment android:name="org.redplatoon.reddified.app.PostFragment"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1">
+    </android.support.v4.view.ViewPager>
+
+    <!-- <fragment android:name="org.redplatoon.reddified.app.PostFragment"
         android:id="@+id/posts"
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="0dp" />
+        android:layout_height="0dp" /> -->
 
 </LinearLayout>
