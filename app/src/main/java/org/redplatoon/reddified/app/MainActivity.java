@@ -19,8 +19,8 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        //FragmentManager fragmentManager = getFragmentManager();
+        //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         final ActionBar actionBar = getActionBar();
 
@@ -54,14 +54,12 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
             }
         };
 
-        // Add 3 tabs, specifying the tab's text and TabListener
-        for (int i = 0; i < 3; i++) {
-            actionBar.addTab(
-                    actionBar.newTab()
-                            .setText("Tab " + (i + 1))
-                            .setTabListener(tabListener));
-        }
-        //updatePosts();
+        actionBar.addTab(actionBar.newTab().setText("Hot").setTabListener(tabListener));
+        actionBar.addTab(actionBar.newTab().setText("New").setTabListener(tabListener));
+        actionBar.addTab(actionBar.newTab().setText("Rising").setTabListener(tabListener));
+        actionBar.addTab(actionBar.newTab().setText("Controversial").setTabListener(tabListener));
+        actionBar.addTab(actionBar.newTab().setText("Top").setTabListener(tabListener));
+        actionBar.addTab(actionBar.newTab().setText("Gilded").setTabListener(tabListener));
     }
 
     @Override
