@@ -1,47 +1,17 @@
 package org.redplatoon.reddified.app;
 
 import android.app.Activity;
-import android.app.ListActivity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
-
-import org.redplatoon.reddified.app.models.Post;
-
-import java.util.ArrayList;
-import java.util.Map;
-
-
-public class MainActivity extends ListActivity implements PostsAdapter.PostUpdater {
-
-    public static final String USER_CREDS = "ReddifiedUser";
-
-    private PostsAdapter mPostsAdapter;
-    private String mCount = String.valueOf(0);
-    private SharedPreferences mSettings;
+public class MainActivity extends FragmentActivity implements PostFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSettings = getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
-        setListAdapter(new PostsAdapter(this, getApplicationContext()));
-        mPostsAdapter = (PostsAdapter) getListAdapter();
+        setContentView(R.layout.main);
         //updatePosts();
     }
 
@@ -64,73 +34,11 @@ public class MainActivity extends ListActivity implements PostsAdapter.PostUpdat
         return super.onOptionsItemSelected(item);
     }
 
-    public void updatePosts(String after) {
-        System.out.println("OLDAFTER: " + after);
-        final ArrayList<Post> posts = new ArrayList<Post>();
-        Ion.with(getApplicationContext())
-                .load("http://www.reddit.com/.json")
-                .addQuery("after", after)
-                .setLogging("MyLogs", Log.DEBUG)
-                .asJsonObject()
-                .setCallback(new FutureCallback<JsonObject>() {
-                    @Override
-                    public void onCompleted(Exception e, JsonObject result) {
-
-                        JsonArray children = result
-                                .get("data")
-                                .getAsJsonObject()
-                                .get("children")
-                                .getAsJsonArray();
-
-                        for(JsonElement child: children) {
-                            Post post = new Post();
-                            post.title = child.getAsJsonObject().get("data").getAsJsonObject().get("title").toString();
-                            post.author = child.getAsJsonObject().get("data").getAsJsonObject().get("author").toString();
-                            post.url = child.getAsJsonObject().get("data").getAsJsonObject().get("url").toString().trim();
-
-                            post.thumbnail = child.getAsJsonObject()
-                                                  .get("data")
-                                                  .getAsJsonObject()
-                                                  .get("thumbnail")
-                                                  .toString()
-                                                  .replaceAll("^\\p{Graph}", "")
-                                                  .replaceAll("\"", "");
-
-                            post.id = child.getAsJsonObject().get("data").getAsJsonObject().get("id").toString();
-                            post.subreddit = child.getAsJsonObject().get("data").getAsJsonObject().get("subreddit").toString();
-                            post.permaLink = child.getAsJsonObject().get("data").getAsJsonObject().get("permalink").toString();
-                            post.name = child.getAsJsonObject().get("data").getAsJsonObject().get("name").toString();
-
-                            post.ups = child.getAsJsonObject().get("data").getAsJsonObject().get("ups").getAsInt();
-                            post.downs = child.getAsJsonObject().get("data").getAsJsonObject().get("downs").getAsInt();
-                            post.score = child.getAsJsonObject().get("data").getAsJsonObject().get("score").getAsInt();
-                            post.created = child.getAsJsonObject().get("data").getAsJsonObject().get("created").getAsInt();
-                            post.createdUtc = child.getAsJsonObject().get("data").getAsJsonObject().get("created_utc").getAsInt();
-                            post.numComments = child.getAsJsonObject().get("data").getAsJsonObject().get("num_comments").getAsInt();
-
-                            post.visited = child.getAsJsonObject().get("data").getAsJsonObject().get("visited").getAsBoolean();
-                            post.nsfw = child.getAsJsonObject().get("data").getAsJsonObject().get("over_18").getAsBoolean();
-
-                            posts.add(post);
-                        }
-
-                        String newAfter = result
-                                          .getAsJsonObject()
-                                          .get("data")
-                                          .getAsJsonObject()
-                                          .get("after")
-                                          .toString()
-                                          .replaceAll("^\\p{Graph}", "")
-                                          .replaceAll("\"", "");
-                        int tempCount = Integer.parseInt(mCount);
-                        tempCount += posts.size();
-                        System.out.println("NEWAFTER: " + newAfter);
-                        mPostsAdapter.update(posts, tempCount, newAfter);
-                    }
-                });
+    public void onFragmentInteraction(String id) {
+        //TODO: Something..
     }
 
-    private void signIn() {
+    //private void signIn() {
         /*
         final Button mSignout = (Button) findViewById(R.id.sign_out);
         final Map<String, ?> prefs = settings.getAll();
@@ -154,5 +62,5 @@ public class MainActivity extends ListActivity implements PostsAdapter.PostUpdat
             startActivity(intent);
         }
         */
-    }
+    //}
 }

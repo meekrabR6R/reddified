@@ -21,6 +21,7 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:+'
     compile 'com.koushikdutta.ion:ion:1.2.0'
-    //compile 'com.github.jreddit:jreddit:1.0.0'
+
+    //
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
