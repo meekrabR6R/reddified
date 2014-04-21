@@ -31,6 +31,7 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
 
     private PostsAdapter mPostsAdapter;
     private String mCount = String.valueOf(0);
+    private String mUrl;
     private SharedPreferences mSettings;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -69,6 +70,8 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        mUrl = String.format(getString(R.string.reddit_url));
 
         //mSettings = getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
         setListAdapter(new PostsAdapter(this, getActivity()));
@@ -124,12 +127,11 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
     }
 
     public void updatePosts(String after) {
-        System.out.println("OLDAFTER: " + after);
+
         final ArrayList<Post> posts = new ArrayList<Post>();
         Ion.with(getActivity())
-                .load("http://www.reddit.com/.json")
+                .load(mUrl+".json")
                 .addQuery("after", after)
-                .setLogging("MyLogs", Log.DEBUG)
                 .asJsonObject()
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
