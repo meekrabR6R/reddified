@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 import com.google.gson.JsonArray;
@@ -94,7 +95,9 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+           // mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+            Toast toast = Toast.makeText(getActivity(), "Click!", Toast.LENGTH_SHORT);
+            toast.show();
         }
     }
 
@@ -130,6 +133,8 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
                                 .getAsJsonObject()
                                 .get("children")
                                 .getAsJsonArray();
+
+                        System.out.println("CHITLINS: " + mUrl);
 
                         for(JsonElement child: children) {
                             Post post = new Post();

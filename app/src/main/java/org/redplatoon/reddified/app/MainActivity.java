@@ -32,7 +32,7 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
 
         // Specify that tabs should be displayed in the action bar.
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        /*
+
         mViewPager.setOnPageChangeListener(
                 new ViewPager.SimpleOnPageChangeListener() {
                     @Override
@@ -43,7 +43,6 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
                     }
                 });
 
-        */
         // Create a tab listener that is called when the user changes tabs.
         ActionBar.TabListener tabListener = new ActionBar.TabListener() {
             public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
@@ -68,7 +67,6 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
         actionBar.addTab(actionBar.newTab().setText("Rising").setTabListener(tabListener));
         actionBar.addTab(actionBar.newTab().setText("Controversial").setTabListener(tabListener));
         actionBar.addTab(actionBar.newTab().setText("Top").setTabListener(tabListener));
-        actionBar.addTab(actionBar.newTab().setText("Gilded").setTabListener(tabListener));
     }
 
     @Override

@@ -34,8 +34,6 @@ public class PostFragmentStatePagerAdapter extends FragmentStatePagerAdapter {
                 break;
             case 4:  title = "TOP";
                 break;
-            case 5:  title = "GILDED";
-                break;
         }
         return title;
     }
@@ -53,8 +51,6 @@ public class PostFragmentStatePagerAdapter extends FragmentStatePagerAdapter {
             case 3:  filter = "controversial";
                      break;
             case 4:  filter = "top";
-                     break;
-            case 5:  filter = "gilded";
                      break;
             default: filter = "";
                      break;
