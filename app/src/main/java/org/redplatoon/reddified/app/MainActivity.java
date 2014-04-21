@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,14 +34,12 @@ public class MainActivity extends ListActivity implements PostsAdapter.PostUpdat
 
     private PostsAdapter mPostsAdapter;
     private String mCount = String.valueOf(0);
-    private String mAfter = "";
     private SharedPreferences mSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSettings = getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
-        //System.out.println("DOODA! " + postsAdapter.getCount());
         setListAdapter(new PostsAdapter(this, getApplicationContext()));
         mPostsAdapter = (PostsAdapter) getListAdapter();
         //updatePosts();
@@ -48,7 +47,6 @@ public class MainActivity extends ListActivity implements PostsAdapter.PostUpdat
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -66,16 +64,18 @@ public class MainActivity extends ListActivity implements PostsAdapter.PostUpdat
         return super.onOptionsItemSelected(item);
     }
 
-    public void updatePosts() {
+    public void updatePosts(String after) {
+        System.out.println("OLDAFTER: " + after);
         final ArrayList<Post> posts = new ArrayList<Post>();
-
-        Ion.with(getApplicationContext(), "http://www.reddit.com/.json")
-                .addQuery("count", mCount)
-                .addQuery("after", mAfter)
+        Ion.with(getApplicationContext())
+                .load("http://www.reddit.com/.json")
+                .addQuery("after", after)
+                .setLogging("MyLogs", Log.DEBUG)
                 .asJsonObject()
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
+
                         JsonArray children = result
                                 .get("data")
                                 .getAsJsonObject()
@@ -114,10 +114,18 @@ public class MainActivity extends ListActivity implements PostsAdapter.PostUpdat
                             posts.add(post);
                         }
 
-                        mAfter = result.getAsJsonObject().get("data").getAsJsonObject().get("after").toString();
+                        String newAfter = result
+                                          .getAsJsonObject()
+                                          .get("data")
+                                          .getAsJsonObject()
+                                          .get("after")
+                                          .toString()
+                                          .replaceAll("^\\p{Graph}", "")
+                                          .replaceAll("\"", "");
                         int tempCount = Integer.parseInt(mCount);
-                        tempCount += posts.size() - 1;
-                        mPostsAdapter.update(posts, tempCount);
+                        tempCount += posts.size();
+                        System.out.println("NEWAFTER: " + newAfter);
+                        mPostsAdapter.update(posts, tempCount, newAfter);
                     }
                 });
     }

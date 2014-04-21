@@ -24,9 +24,10 @@ public class PostsAdapter extends ArrayAdapter<Post> {
     private ArrayList<Post> mPosts = new ArrayList<Post>();
     private PostUpdater mPostUpdater;
     private int mCount;
+    private String mAfter;
 
     public interface  PostUpdater {
-        public void updatePosts();
+        public void updatePosts(String after);
     }
 
     public PostsAdapter(PostUpdater postUpdater, Context context) {
@@ -34,25 +35,35 @@ public class PostsAdapter extends ArrayAdapter<Post> {
         mContext = context;
         mLayoutInflater = LayoutInflater.from(mContext);
         mPostUpdater = postUpdater;
-        mPostUpdater.updatePosts();
+        mPostUpdater.updatePosts(mAfter);
     }
 
     @Override
     public int getCount() { return mPosts.size();}
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public Post getItem(int position) {
+        return mPosts.get(position);
+    }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
         if (position + 10 == mPosts.size())
-            mPostUpdater.updatePosts();
+            mPostUpdater.updatePosts(mAfter);
 
         mLayoutInflater = (LayoutInflater) mContext
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                          .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View post = mLayoutInflater.inflate(R.layout.post, parent, false);
 
         Post currPost = mPosts.get(position);
-        System.out.println("CURR: " + currPost.title);
+
         TextView titleView = (TextView) post.findViewById(R.id.title);
         titleView.setText(currPost.title);
 
@@ -69,8 +80,9 @@ public class PostsAdapter extends ArrayAdapter<Post> {
         return post;
     }
 
-    public void update(ArrayList<Post> posts, int count) {
+    public void update(ArrayList<Post> posts, int count, String after) {
         mCount = count;
+        mAfter = after;
         mPosts.addAll(posts);
         notifyDataSetChanged();
     }
