@@ -13,6 +13,7 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
 
     private ViewPager mViewPager;
     private PostFragmentStatePagerAdapter mPostFragmentPagerAdapter;
+    private static final int TABS_COUNT = 5;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +40,8 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
                     public void onPageSelected(int position) {
                         // When swiping between pages, select the
                         // corresponding tab.
-                        actionBar.setSelectedNavigationItem(position);
+                        if(position < TABS_COUNT)
+                            actionBar.setSelectedNavigationItem(position);
                     }
                 });
 
