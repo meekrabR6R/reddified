@@ -176,6 +176,15 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
                 Intent intent = new Intent(getApplicationContext(), SigninActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(intent);
+            } else if(menuItem.equals("Sign Out")) {
+                SharedPreferences.Editor editor = mSettings.edit();
+                editor.remove("cookie");
+                editor.remove("modHash");
+                editor.commit();
+                Toast toast = Toast.makeText(getApplicationContext(), "See ya", Toast.LENGTH_SHORT);
+                toast.show();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
             }
         }
     }
