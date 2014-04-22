@@ -7,10 +7,12 @@
     <string name="rising_tab">RISING</string>
     <string name="controversial_tab">CONTROVERSIAL</string>
     <string name="top_tab">TOP</string>
-
     <string name="action_settings">Settings</string>
     <string name="title_activity_signin">SigninActivity</string>
     <string name="reddit_url">http://www.reddit.com/</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
     <color name="reddit_blue">#cee3f8</color>
     <color name="white">#FFFFFF</color>
 

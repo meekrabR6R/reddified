@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/drawer">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
@@ -12,10 +13,20 @@
         android:layout_weight="1">
     </android.support.v4.view.ViewPager>
 
+    <!-- The navigation drawer -->
+    <ListView android:id="@+id/left_drawer"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:background="#111"/>
+
     <!-- <fragment android:name="org.redplatoon.reddified.app.PostFragment"
         android:id="@+id/posts"
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp" /> -->
 
-</LinearLayout>
+</android.support.v4.widget.DrawerLayout>
