@@ -55,7 +55,6 @@ public class PostFragmentStatePagerAdapter extends FragmentStatePagerAdapter {
             default: filter = "";
                      break;
         }
-        System.out.println("CURRITEM: " + filter);
         return PostFragment.newInstance(filter);
     }
 }

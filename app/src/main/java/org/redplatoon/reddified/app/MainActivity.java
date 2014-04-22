@@ -26,8 +26,6 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
 
         mPostFragmentPagerAdapter = new PostFragmentStatePagerAdapter(getFragmentManager());
 
-        //mViewPager = new ViewPager(this);
-        //mViewPager.setId(R.id.pager);
         mViewPager = (ViewPager)findViewById(R.id.pager);
         mViewPager.setAdapter(mPostFragmentPagerAdapter);
 
@@ -50,9 +48,7 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
             public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
                 // When the tab is selected, switch to the
                 // corresponding page in the ViewPager.
-
                 mViewPager.setCurrentItem(tab.getPosition());
-                System.out.println("CURRITEM: " + mViewPager.getCurrentItem());
             }
 
             public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {

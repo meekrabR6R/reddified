@@ -134,8 +134,6 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
                                 .get("children")
                                 .getAsJsonArray();
 
-                        System.out.println("CHITLINS: " + mUrl);
-
                         for(JsonElement child: children) {
                             Post post = new Post();
                             post.title = child.getAsJsonObject().get("data").getAsJsonObject().get("title").toString();
@@ -175,7 +173,7 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
                                             .get("after");
 
                         String newAfter = "END";
-                        System.out.println("PRERES: " + preRes.toString());
+
                         if(preRes != null) {
                             newAfter = result
                                        .getAsJsonObject()
@@ -191,7 +189,7 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
 
                         int tempCount = Integer.parseInt(mCount);
                         tempCount += posts.size();
-                        System.out.println("NEWAFTER: " + newAfter);
+
                         mPostsAdapter.update(posts, tempCount, newAfter);
                     }
                 });
