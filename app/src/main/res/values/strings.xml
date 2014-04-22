@@ -13,6 +13,16 @@
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
 
+    <string-array name="signed_out_drawer_menu">
+        <item>Sign In</item>
+    </string-array>
+
+    <string-array name="signed_in_drawer_menu">
+        <item>Profile</item>
+        <item>Subreddits</item>
+        <item>Sign Out</item>
+    </string-array>
+
     <color name="reddit_blue">#cee3f8</color>
     <color name="white">#FFFFFF</color>
 

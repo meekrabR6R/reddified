@@ -7,20 +7,14 @@ import android.os.Bundle;
 import android.app.ListFragment;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
-
-import org.redplatoon.reddified.app.dummy.DummyContent;
 import org.redplatoon.reddified.app.models.Post;
-
 import java.util.ArrayList;
 
 /**
@@ -29,13 +23,13 @@ import java.util.ArrayList;
 public class PostFragment extends ListFragment implements PostsAdapter.PostUpdater {
 
     public static final String USER_CREDS = "ReddifiedUser";
-
     private PostsAdapter mPostsAdapter;
     private String mCount = String.valueOf(0);
     private String mUrl;
     private String mFilter;
     private SharedPreferences mSettings;
     private OnFragmentInteractionListener mListener;
+    private String modHash;
 
     public static PostFragment newInstance(String filter) {
         PostFragment fragment = new PostFragment();
@@ -55,6 +49,10 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mSettings = getActivity().getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
+
+        if(mSettings.contains("modHash"))
+            modHash = mSettings.getString("modHash", "");
 
         if (getArguments() != null) {
             mFilter = getArguments().getString("filter");

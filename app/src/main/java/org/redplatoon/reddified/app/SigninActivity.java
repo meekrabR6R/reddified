@@ -21,14 +21,14 @@ import com.koushikdutta.ion.Ion;
 public class SigninActivity extends Activity {
 
     public static final String USER_CREDS = "ReddifiedUser";
-    private SharedPreferences settings;
+    private SharedPreferences mSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
 
-        settings = getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
+        mSettings = getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
         final Button mSignin = (Button) findViewById(R.id.sign_in);
         final EditText mUser = (EditText)findViewById(R.id.username);
         final EditText mPasswrd = (EditText)findViewById(R.id.password);
@@ -83,7 +83,7 @@ public class SigninActivity extends Activity {
                             JsonArray errors = json.get("errors").getAsJsonArray();
 
                             if(errors.size() <= 0) {
-                                SharedPreferences.Editor editor = settings.edit();
+                                SharedPreferences.Editor editor = mSettings.edit();
                                 JsonObject data = json.get("data").getAsJsonObject();
 
                                 String cookie = data.get("cookie").toString();
