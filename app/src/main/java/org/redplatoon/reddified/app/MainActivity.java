@@ -62,11 +62,11 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
             }
         };
 
-        actionBar.addTab(actionBar.newTab().setText("Hot").setTabListener(tabListener));
-        actionBar.addTab(actionBar.newTab().setText("New").setTabListener(tabListener));
-        actionBar.addTab(actionBar.newTab().setText("Rising").setTabListener(tabListener));
-        actionBar.addTab(actionBar.newTab().setText("Controversial").setTabListener(tabListener));
-        actionBar.addTab(actionBar.newTab().setText("Top").setTabListener(tabListener));
+        actionBar.addTab(actionBar.newTab().setText(getString(R.string.hot_tab)).setTabListener(tabListener));
+        actionBar.addTab(actionBar.newTab().setText(getString(R.string.new_tab)).setTabListener(tabListener));
+        actionBar.addTab(actionBar.newTab().setText(getString(R.string.rising_tab)).setTabListener(tabListener));
+        actionBar.addTab(actionBar.newTab().setText(getString(R.string.controversial_tab)).setTabListener(tabListener));
+        actionBar.addTab(actionBar.newTab().setText(getString(R.string.top_tab)).setTabListener(tabListener));
     }
 
     @Override
