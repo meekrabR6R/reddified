@@ -38,7 +38,6 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
     private OnFragmentInteractionListener mListener;
 
     public static PostFragment newInstance(String filter) {
-        System.out.println("FILTER: " + filter);
         PostFragment fragment = new PostFragment();
         Bundle args = new Bundle();
         args.putString("filter", filter);

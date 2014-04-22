@@ -8,7 +8,7 @@ import android.app.FragmentManager;
  * Created by nmiano on 4/21/14.
  */
 public class PostFragmentStatePagerAdapter extends FragmentStatePagerAdapter {
-    private int NUM_ITEMS = 6;
+    private int NUM_ITEMS = 5;
 
     public PostFragmentStatePagerAdapter(FragmentManager fm) {
         super(fm);
