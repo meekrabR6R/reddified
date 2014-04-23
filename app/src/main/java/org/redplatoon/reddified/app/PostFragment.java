@@ -29,7 +29,9 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
     private String mFilter;
     private SharedPreferences mSettings;
     private OnFragmentInteractionListener mListener;
-    private String modHash;
+    private String mUserAgent;
+    private String mModHash;
+    private String mCookie;
 
     public static PostFragment newInstance(String filter) {
         PostFragment fragment = new PostFragment();
@@ -50,10 +52,13 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSettings = getActivity().getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
+        mUserAgent = getString(R.string.user_agent);
 
         if(mSettings.contains("modHash"))
-            modHash = mSettings.getString("modHash", "");
+            mModHash = mSettings.getString("modHash", "");
 
+        if(mSettings.contains("cookie"))
+            mCookie = mSettings.getString("cookie", "");
         if (getArguments() != null) {
             mFilter = getArguments().getString("filter");
         } else {
@@ -114,82 +119,69 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
     }
 
     public void updatePosts(String after) {
-
         final ArrayList<Post> posts = new ArrayList<Post>();
+
         Ion.with(getActivity())
                 .load(mUrl)
+                .setHeader("User-Agent", mUserAgent)
+                .setHeader("X-Modhash", mModHash)
+                .setHeader("Cookie", "reddit_session="+mCookie)
                 .addQuery("after", after)
-                .setLogging("MyLogs", Log.DEBUG)
                 .asJsonObject()
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
-
-                        JsonArray children = result
-                                .get("data")
-                                .getAsJsonObject()
-                                .get("children")
-                                .getAsJsonArray();
-
-                        for(JsonElement child: children) {
-                            Post post = new Post();
-                            post.title = child.getAsJsonObject().get("data").getAsJsonObject().get("title").toString();
-                            post.author = child.getAsJsonObject().get("data").getAsJsonObject().get("author").toString();
-                            post.url = child.getAsJsonObject().get("data").getAsJsonObject().get("url").toString().trim();
-
-                            post.thumbnail = child.getAsJsonObject()
+                        if(e != null) {
+                            Log.d("HTTPERR", e.toString());
+                        } else {
+                            System.out.println("MODHASH: " + result.get("data").getAsJsonObject().get("modhash"));
+                            JsonArray children = result
                                     .get("data")
                                     .getAsJsonObject()
-                                    .get("thumbnail")
-                                    .toString()
-                                    .replaceAll("^\\p{Graph}", "")
-                                    .replaceAll("\"", "");
+                                    .get("children")
+                                    .getAsJsonArray();
 
-                            post.id = child.getAsJsonObject().get("data").getAsJsonObject().get("id").toString();
-                            post.subreddit = child.getAsJsonObject().get("data").getAsJsonObject().get("subreddit").toString();
-                            post.permaLink = child.getAsJsonObject().get("data").getAsJsonObject().get("permalink").toString();
-                            post.name = child.getAsJsonObject().get("data").getAsJsonObject().get("name").toString();
+                            for (JsonElement child : children) {
+                                Post post = new Post();
+                                post.title = child.getAsJsonObject().get("data").getAsJsonObject().get("title").getAsString();
+                                post.author = child.getAsJsonObject().get("data").getAsJsonObject().get("author").getAsString();
+                                post.url = child.getAsJsonObject().get("data").getAsJsonObject().get("url").getAsString();
+                                post.thumbnail = child.getAsJsonObject().get("data").getAsJsonObject().get("thumbnail").getAsString();
+                                post.id = child.getAsJsonObject().get("data").getAsJsonObject().get("id").getAsString();
+                                post.subreddit = child.getAsJsonObject().get("data").getAsJsonObject().get("subreddit").getAsString();
+                                post.permaLink = child.getAsJsonObject().get("data").getAsJsonObject().get("permalink").getAsString();
+                                post.name = child.getAsJsonObject().get("data").getAsJsonObject().get("name").getAsString();
 
-                            post.ups = child.getAsJsonObject().get("data").getAsJsonObject().get("ups").getAsInt();
-                            post.downs = child.getAsJsonObject().get("data").getAsJsonObject().get("downs").getAsInt();
-                            post.score = child.getAsJsonObject().get("data").getAsJsonObject().get("score").getAsInt();
-                            post.created = child.getAsJsonObject().get("data").getAsJsonObject().get("created").getAsInt();
-                            post.createdUtc = child.getAsJsonObject().get("data").getAsJsonObject().get("created_utc").getAsInt();
-                            post.numComments = child.getAsJsonObject().get("data").getAsJsonObject().get("num_comments").getAsInt();
+                                post.ups = child.getAsJsonObject().get("data").getAsJsonObject().get("ups").getAsInt();
+                                post.downs = child.getAsJsonObject().get("data").getAsJsonObject().get("downs").getAsInt();
+                                post.score = child.getAsJsonObject().get("data").getAsJsonObject().get("score").getAsInt();
+                                post.created = child.getAsJsonObject().get("data").getAsJsonObject().get("created").getAsInt();
+                                post.createdUtc = child.getAsJsonObject().get("data").getAsJsonObject().get("created_utc").getAsInt();
+                                post.numComments = child.getAsJsonObject().get("data").getAsJsonObject().get("num_comments").getAsInt();
 
-                            post.visited = child.getAsJsonObject().get("data").getAsJsonObject().get("visited").getAsBoolean();
-                            post.nsfw = child.getAsJsonObject().get("data").getAsJsonObject().get("over_18").getAsBoolean();
+                                post.visited = child.getAsJsonObject().get("data").getAsJsonObject().get("visited").getAsBoolean();
+                                post.nsfw = child.getAsJsonObject().get("data").getAsJsonObject().get("over_18").getAsBoolean();
 
-                            posts.add(post);
+                                posts.add(post);
+                            }
+
+                            JsonElement preRes = result.getAsJsonObject().get("data").getAsJsonObject().get("after");
+
+                            String newAfter = "END";
+
+                            if (preRes != null) {
+                                newAfter = result.getAsJsonObject().get("data").getAsJsonObject().get("after").getAsString();
+                            }
+
+
+                            int tempCount = Integer.parseInt(mCount);
+                            tempCount += posts.size();
+
+                            mPostsAdapter.update(posts, tempCount, newAfter);
                         }
-
-                        JsonElement preRes = result
-                                            .getAsJsonObject()
-                                            .get("data")
-                                            .getAsJsonObject()
-                                            .get("after");
-
-                        String newAfter = "END";
-
-                        if(preRes != null) {
-                            newAfter = result
-                                       .getAsJsonObject()
-                                       .get("data")
-                                       .getAsJsonObject()
-                                       .get("after")
-                                       .toString()
-                                       .replaceAll("^\\p{Graph}", "")
-                                       .replaceAll("\"", "");
-                        }
-
-
-
-                        int tempCount = Integer.parseInt(mCount);
-                        tempCount += posts.size();
-
-                        mPostsAdapter.update(posts, tempCount, newAfter);
                     }
                 });
+
     }
 
 }

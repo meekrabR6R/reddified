@@ -181,7 +181,7 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
                 editor.remove("cookie");
                 editor.remove("modHash");
                 editor.commit();
-                Toast toast = Toast.makeText(getApplicationContext(), "See ya", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.farewell), Toast.LENGTH_SHORT);
                 toast.show();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);

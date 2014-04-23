@@ -22,6 +22,7 @@ public class SigninActivity extends Activity {
 
     public static final String USER_CREDS = "ReddifiedUser";
     private SharedPreferences mSettings;
+    private String mUserAgent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,8 @@ public class SigninActivity extends Activity {
         setContentView(R.layout.activity_signin);
 
         mSettings = getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
+        mUserAgent = getString(R.string.user_agent);
+
         final Button mSignin = (Button) findViewById(R.id.sign_in);
         final EditText mUser = (EditText)findViewById(R.id.username);
         final EditText mPasswrd = (EditText)findViewById(R.id.password);
@@ -65,13 +68,14 @@ public class SigninActivity extends Activity {
 
     private void attemptLogin(String user, String passwd) {
         if (user.length() <= 0) {
-            Toast toast = Toast.makeText(getApplicationContext(), "Username required.", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.username_req), Toast.LENGTH_LONG);
             toast.show();
         } else if(passwd.length() <= 0) {
-            Toast toast = Toast.makeText(getApplicationContext(), "Password cannot be blank.", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.password_req), Toast.LENGTH_LONG);
             toast.show();
         } else {
-            Ion.with(getApplicationContext(), "http://www.reddit.com/api/login")
+            Ion.with(getApplicationContext(), getString(R.string.reddit_url)+"/api/login")
+                    .setHeader("User-Agent", mUserAgent)
                     .setBodyParameter("user", user)
                     .setBodyParameter("passwd", passwd)
                     .setBodyParameter("api_type", "json")
@@ -86,14 +90,14 @@ public class SigninActivity extends Activity {
                                 SharedPreferences.Editor editor = mSettings.edit();
                                 JsonObject data = json.get("data").getAsJsonObject();
 
-                                String cookie = data.get("cookie").toString();
-                                String modHash = data.getAsJsonObject().get("modhash").toString();
+                                String cookie = data.get("cookie").getAsString();
+                                String modHash = data.getAsJsonObject().get("modhash").getAsString();
 
                                 editor.putString("cookie", cookie);
                                 editor.putString("modHash", modHash);
                                 editor.commit();
 
-                                Toast toast = Toast.makeText(getApplicationContext(), "Hello", Toast.LENGTH_LONG);
+                                Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.greeting), Toast.LENGTH_LONG);
                                 toast.show();
 
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
