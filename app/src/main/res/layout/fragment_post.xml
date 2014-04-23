@@ -31,7 +31,6 @@
         android:id="@+id/author_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignWithParentIfMissing="true"
         android:layout_below="@id/title"
         android:layout_toRightOf="@id/thumb"
@@ -41,13 +40,35 @@
 
     <TextView
         android:id="@+id/author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_below="@id/title"
+        android:layout_toRightOf="@id/author_label"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/subreddit_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_below="@id/author_label"
+        android:layout_toRightOf="@id/thumb"
+        android:gravity="center_vertical"
+        android:text="subreddit: "
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/subreddit"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_below="@id/title"
-        android:layout_toRightOf="@id/author_label"
+        android:layout_below="@id/author"
+        android:layout_toRightOf="@id/subreddit_label"
         android:textSize="12sp" />
 
 </RelativeLayout>

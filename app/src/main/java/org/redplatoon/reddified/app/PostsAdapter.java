@@ -70,6 +70,9 @@ public class PostsAdapter extends ArrayAdapter<Post> {
         TextView authorView = (TextView) post.findViewById(R.id.author);
         authorView.setText(currPost.author);
 
+        TextView subredditView = (TextView) post.findViewById(R.id.subreddit);
+        subredditView.setText(currPost.subreddit);
+
         ImageView imageView = (ImageView) post.findViewById(R.id.thumb);
         if (currPost.thumbnail.length() > 7) {
             Ion.with(imageView)
