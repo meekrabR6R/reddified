@@ -31,7 +31,7 @@ public class PostsAdapter extends ArrayAdapter<Post> {
     }
 
     public PostsAdapter(PostUpdater postUpdater, Context context) {
-        super(context, R.layout.post);
+        super(context, R.layout.fragment_post);
         mContext = context;
         mLayoutInflater = LayoutInflater.from(mContext);
         mPostUpdater = postUpdater;
@@ -60,7 +60,7 @@ public class PostsAdapter extends ArrayAdapter<Post> {
         mLayoutInflater = (LayoutInflater) mContext
                           .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View post = mLayoutInflater.inflate(R.layout.post, parent, false);
+        View post = mLayoutInflater.inflate(R.layout.fragment_post, parent, false);
 
         Post currPost = mPosts.get(position);
 

@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.app.ListFragment;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -121,6 +123,7 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
     public void updatePosts(String after) {
         final ArrayList<Post> posts = new ArrayList<Post>();
 
+        getActivity().setProgressBarIndeterminateVisibility(true);
         Ion.with(getActivity())
                 .load(mUrl)
                 .setHeader("User-Agent", mUserAgent)
@@ -131,10 +134,11 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override
                     public void onCompleted(Exception e, JsonObject result) {
+                        getActivity().setProgressBarIndeterminateVisibility(false);
+                        //progress.setVisibility(8);
                         if(e != null) {
                             Log.d("HTTPERR", e.toString());
                         } else {
-                            System.out.println("MODHASH: " + result.get("data").getAsJsonObject().get("modhash"));
                             JsonArray children = result
                                     .get("data")
                                     .getAsJsonObject()
