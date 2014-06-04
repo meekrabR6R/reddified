@@ -1,22 +1,23 @@
 package org.redplatoon.reddified.app;
 
 import android.app.Activity;
+import android.app.ListFragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.app.ListFragment;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+
 import org.redplatoon.reddified.app.models.Post;
+
 import java.util.ArrayList;
 
 /**
@@ -150,7 +151,7 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
                                 post.title = child.getAsJsonObject().get("data").getAsJsonObject().get("title").getAsString();
                                 post.author = child.getAsJsonObject().get("data").getAsJsonObject().get("author").getAsString();
                                 post.url = child.getAsJsonObject().get("data").getAsJsonObject().get("url").getAsString();
-                                post.thumbnail = child.getAsJsonObject().get("data").getAsJsonObject().get("thumbnail").getAsString();
+                                post.setThumbnail(child.getAsJsonObject().get("data").getAsJsonObject().get("thumbnail").getAsString());
                                 post.id = child.getAsJsonObject().get("data").getAsJsonObject().get("id").getAsString();
                                 post.subreddit = child.getAsJsonObject().get("data").getAsJsonObject().get("subreddit").getAsString();
                                 post.permaLink = child.getAsJsonObject().get("data").getAsJsonObject().get("permalink").getAsString();

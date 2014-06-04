@@ -2,7 +2,6 @@ package org.redplatoon.reddified.app;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
@@ -18,12 +17,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.Map;
 
 public class MainActivity extends Activity implements PostFragment.OnFragmentInteractionListener {
 
@@ -60,24 +55,19 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
         else
             mDrawerItems = getResources().getStringArray(R.array.signed_out_drawer_menu);
 
-        // Set the adapter for the list view
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.drawer_list_item, mDrawerItems));
-        // Set the list's click listener
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-        // enable ActionBar app icon to behave as action to toggle nav drawer
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
-        // ActionBarDrawerToggle ties together the the proper interactions
-        // between the sliding drawer and the action bar app icon
         mDrawerToggle = new ActionBarDrawerToggle(
-                this,                  /* host Activity */
-                mDrawerLayout,         /* DrawerLayout object */
-                R.drawable.ic_drawer,  /* nav drawer image to replace 'Up' caret */
-                R.string.drawer_open,  /* "open drawer" description for accessibility */
-                R.string.drawer_close  /* "close drawer" description for accessibility */
+                this,
+                mDrawerLayout,
+                R.drawable.ic_drawer,
+                R.string.drawer_open,
+                R.string.drawer_close
         ) {
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
@@ -92,7 +82,6 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
             }
         };
 
-        // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         final ActionBar actionBar = getActionBar();

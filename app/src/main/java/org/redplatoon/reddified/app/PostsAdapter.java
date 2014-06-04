@@ -5,8 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.koushikdutta.ion.Ion;
 
@@ -74,11 +74,12 @@ public class PostsAdapter extends ArrayAdapter<Post> {
         subredditView.setText(currPost.subreddit);
 
         ImageView imageView = (ImageView) post.findViewById(R.id.thumb);
-        if (currPost.thumbnail.length() > 7) {
+        String thumbnail = currPost.getThumbnail();
+        if (thumbnail.length() > 7) {
             Ion.with(imageView)
                     .placeholder(R.drawable.alien_thumb)
                     .error(R.drawable.alien_thumb)
-                    .load(currPost.thumbnail);
+                    .load(thumbnail);
         }
         return post;
     }
