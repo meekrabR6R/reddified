@@ -33,6 +33,7 @@ public class Post {
     public String getThumbnail() {
         return thumbnail;
     }
+
     @Override
     public String toString() {
         return title + "\n" + author;
