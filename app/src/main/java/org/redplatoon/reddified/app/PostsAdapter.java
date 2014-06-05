@@ -73,14 +73,17 @@ public class PostsAdapter extends ArrayAdapter<Post> {
         TextView subredditView = (TextView) post.findViewById(R.id.subreddit);
         subredditView.setText(currPost.subreddit);
 
+        TextView scoreView = (TextView) post.findViewById(R.id.score);
+        scoreView.setText(String.valueOf(currPost.score));
+
         ImageView imageView = (ImageView) post.findViewById(R.id.thumb);
         String thumbnail = currPost.getThumbnail();
-        if (thumbnail.length() > 7) {
-            Ion.with(imageView)
-                    .placeholder(R.drawable.alien_thumb)
-                    .error(R.drawable.alien_thumb)
-                    .load(thumbnail);
-        }
+
+        Ion.with(imageView)
+                .placeholder(R.drawable.alien_thumb)
+                .error(R.drawable.alien_thumb)
+                .load(thumbnail);
+
         return post;
     }
 

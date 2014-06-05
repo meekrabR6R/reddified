@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -147,26 +148,9 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
                                     .getAsJsonArray();
 
                             for (JsonElement child : children) {
-                                Post post = new Post();
-                                post.title = child.getAsJsonObject().get("data").getAsJsonObject().get("title").getAsString();
-                                post.author = child.getAsJsonObject().get("data").getAsJsonObject().get("author").getAsString();
-                                post.url = child.getAsJsonObject().get("data").getAsJsonObject().get("url").getAsString();
+                                Gson gson = new Gson();
+                                Post post = gson.fromJson(child.getAsJsonObject().get("data"), Post.class);
                                 post.setThumbnail(child.getAsJsonObject().get("data").getAsJsonObject().get("thumbnail").getAsString());
-                                post.id = child.getAsJsonObject().get("data").getAsJsonObject().get("id").getAsString();
-                                post.subreddit = child.getAsJsonObject().get("data").getAsJsonObject().get("subreddit").getAsString();
-                                post.permaLink = child.getAsJsonObject().get("data").getAsJsonObject().get("permalink").getAsString();
-                                post.name = child.getAsJsonObject().get("data").getAsJsonObject().get("name").getAsString();
-
-                                post.ups = child.getAsJsonObject().get("data").getAsJsonObject().get("ups").getAsInt();
-                                post.downs = child.getAsJsonObject().get("data").getAsJsonObject().get("downs").getAsInt();
-                                post.score = child.getAsJsonObject().get("data").getAsJsonObject().get("score").getAsInt();
-                                post.created = child.getAsJsonObject().get("data").getAsJsonObject().get("created").getAsInt();
-                                post.createdUtc = child.getAsJsonObject().get("data").getAsJsonObject().get("created_utc").getAsInt();
-                                post.numComments = child.getAsJsonObject().get("data").getAsJsonObject().get("num_comments").getAsInt();
-
-                                post.visited = child.getAsJsonObject().get("data").getAsJsonObject().get("visited").getAsBoolean();
-                                post.nsfw = child.getAsJsonObject().get("data").getAsJsonObject().get("over_18").getAsBoolean();
-
                                 posts.add(post);
                             }
 

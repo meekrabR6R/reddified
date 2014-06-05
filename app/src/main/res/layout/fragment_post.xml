@@ -7,14 +7,38 @@
     <ImageView
         android:id="@+id/thumb"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginRight="6dip"
-        android:scaleType="centerInside"
         android:adjustViewBounds="true"
         android:src="@drawable/alien_thumb" />
 
+    <ImageView
+        android:id="@+id/downvote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="17dip"
+        android:layout_below="@id/thumb"
+        android:src="@drawable/downvote" />
 
+    <ImageView
+        android:id="@+id/upvote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="-30dip"
+        android:layout_below="@id/thumb"
+        android:layout_toLeftOf="@id/downvote"
+        android:src="@drawable/upvote" />
+
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_below="@id/downvote"
+        android:gravity="center_vertical"
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/title"

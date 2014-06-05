@@ -10,8 +10,8 @@
     tools:context="org.redplatoon.reddified.app.MainActivity">
 
     <ImageView
-        android:layout_width="175dp"
-        android:layout_height="175dp"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
         android:id="@+id/imageView2"
         android:src="@drawable/redditalien"
         android:layout_marginTop="72dp"
