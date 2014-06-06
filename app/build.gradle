@@ -9,6 +9,7 @@ android {
         targetSdkVersion 19
         versionCode 1
         versionName "1.0"
+        testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
     }
     buildTypes {
         release {
@@ -28,6 +29,6 @@ dependencies {
     compile 'com.koushikdutta.ion:ion:1.2.0'
     compile 'com.android.support:support-v13:+'
     compile 'com.android.support:support-v4:+'
-    //
+    androidTestCompile files('libs/espresso-contrib-1.1-bundled.jar')
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

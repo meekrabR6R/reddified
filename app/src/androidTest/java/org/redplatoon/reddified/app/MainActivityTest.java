@@ -1,11 +1,17 @@
 package org.redplatoon.reddified.app;
 
 import android.app.Activity;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.ListView;
+
+import static com.google.android.apps.common.testing.ui.espresso.Espresso.onView;
+import static com.google.android.apps.common.testing.ui.espresso.assertion.ViewAssertions.matches;
+import static com.google.android.apps.common.testing.ui.espresso.contrib.DrawerActions.openDrawer;
+import static com.google.android.apps.common.testing.ui.espresso.contrib.DrawerMatchers.isOpen;
+import static com.google.android.apps.common.testing.ui.espresso.contrib.DrawerMatchers.isClosed;
+import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMatchers.withId;
 
 /**
  * Created by nmiano on 6/5/14 2:06 PM for Reddified
@@ -37,8 +43,8 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     }
 
     public void testDrawerToggle() throws Exception {
-        assertEquals(false, mDrawerLayout.isDrawerOpen(GravityCompat.START));
-        mDrawerLayout.performClick();
-        //assertEquals(true, mDrawerLayout.isDrawerOpen(GravityCompat.START));
+        onView(withId(R.id.drawer)).check(matches(isClosed()));
+        openDrawer(R.id.drawer);
+        onView(withId(R.id.drawer)).check(matches(isOpen()));
     }
 }
