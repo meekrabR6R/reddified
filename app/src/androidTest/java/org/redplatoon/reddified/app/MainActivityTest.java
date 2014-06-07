@@ -6,12 +6,18 @@ import android.support.v4.widget.DrawerLayout;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.ListView;
 
+import static com.google.android.apps.common.testing.ui.espresso.Espresso.onData;
 import static com.google.android.apps.common.testing.ui.espresso.Espresso.onView;
+import static com.google.android.apps.common.testing.ui.espresso.action.ViewActions.click;
 import static com.google.android.apps.common.testing.ui.espresso.assertion.ViewAssertions.matches;
+import static com.google.android.apps.common.testing.ui.espresso.contrib.DrawerActions.closeDrawer;
 import static com.google.android.apps.common.testing.ui.espresso.contrib.DrawerActions.openDrawer;
-import static com.google.android.apps.common.testing.ui.espresso.contrib.DrawerMatchers.isOpen;
 import static com.google.android.apps.common.testing.ui.espresso.contrib.DrawerMatchers.isClosed;
+import static com.google.android.apps.common.testing.ui.espresso.contrib.DrawerMatchers.isOpen;
 import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMatchers.withId;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
 
 /**
  * Created by nmiano on 6/5/14 2:06 PM for Reddified
@@ -46,5 +52,24 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         onView(withId(R.id.drawer)).check(matches(isClosed()));
         openDrawer(R.id.drawer);
         onView(withId(R.id.drawer)).check(matches(isOpen()));
+        closeDrawer(R.id.drawer);
+        onView(withId(R.id.drawer)).check(matches(isClosed()));
+    }
+
+    public void testDrawerOpenAndClick() {
+        openDrawer(R.id.drawer);
+        onView(withId(R.id.drawer)).check(matches(isOpen()));
+
+        // Click an item in the drawer. We use onData because the drawer is backed by a ListView, and
+        // the item may not necessarily be visible in the view hierarchy.
+        int rowIndex = 1;
+        String rowContents = MainActivity.DRAWER_CONTENTS[rowIndex];
+        onData(allOf(is(instanceOf(String.class)), is(rowContents))).perform(click());
+
+        // clicking the item should close the drawer.
+        onView(withId(R.id.drawer)).check(matches(isClosed()));
+
+        // The text view will now display "You picked: Pickle"
+        //onView(withId(R.id.drawer_text_view)).check(matches(withText("You picked: " + rowContents)));
     }
 }

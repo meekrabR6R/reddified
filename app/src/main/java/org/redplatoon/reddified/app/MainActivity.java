@@ -32,6 +32,7 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String[] mDrawerItems;
+    public static String[] DRAWER_CONTENTS;
 
     private static final int TABS_COUNT = 5;
     @Override
@@ -54,6 +55,8 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
             mDrawerItems = getResources().getStringArray(R.array.signed_in_drawer_menu);
         else
             mDrawerItems = getResources().getStringArray(R.array.signed_out_drawer_menu);
+
+        DRAWER_CONTENTS =mDrawerItems;
 
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.drawer_list_item, mDrawerItems));
