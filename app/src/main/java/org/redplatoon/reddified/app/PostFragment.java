@@ -15,9 +15,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
 
 import org.redplatoon.reddified.app.models.Post;
+import org.redplatoon.reddified.app.services.Reddit;
 
 import java.util.ArrayList;
 
@@ -36,6 +36,7 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
     private String mUserAgent;
     private String mModHash;
     private String mCookie;
+    private Reddit mReddit;
 
     public static PostFragment newInstance(String filter) {
         PostFragment fragment = new PostFragment();
@@ -70,6 +71,7 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
         }
         mUrl = String.format(getString(R.string.reddit_url))+mFilter+".json";
 
+        mReddit = new Reddit(mUserAgent, mModHash, mUrl, mCookie);
         //mSettings = getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
         setListAdapter(new PostsAdapter(this, getActivity()));
         mPostsAdapter = (PostsAdapter) getListAdapter();
@@ -126,50 +128,43 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
         final ArrayList<Post> posts = new ArrayList<Post>();
 
         getActivity().setProgressBarIndeterminateVisibility(true);
-        Ion.with(getActivity())
-                .load(mUrl)
-                .setHeader("User-Agent", mUserAgent)
-                .setHeader("X-Modhash", mModHash)
-                .setHeader("Cookie", "reddit_session="+mCookie)
-                .addQuery("after", after)
-                .asJsonObject()
-                .setCallback(new FutureCallback<JsonObject>() {
-                    @Override
-                    public void onCompleted(Exception e, JsonObject result) {
-                        getActivity().setProgressBarIndeterminateVisibility(false);
-                        //progress.setVisibility(8);
-                        if(e != null) {
-                            Log.d("HTTPERR", e.toString());
-                        } else {
-                            JsonArray children = result
-                                    .get("data")
-                                    .getAsJsonObject()
-                                    .get("children")
-                                    .getAsJsonArray();
+        mReddit.updatePost(after, getActivity(), new FutureCallback<JsonObject>() {
+            @Override
+            public void onCompleted(Exception e, JsonObject result) {
+                getActivity().setProgressBarIndeterminateVisibility(false);
+                //progress.setVisibility(8);
+                if(e != null) {
+                    Log.d("HTTPERR", e.toString());
+                } else {
+                    JsonArray children = result
+                            .get("data")
+                            .getAsJsonObject()
+                            .get("children")
+                            .getAsJsonArray();
 
-                            for (JsonElement child : children) {
-                                Gson gson = new Gson();
-                                Post post = gson.fromJson(child.getAsJsonObject().get("data"), Post.class);
-                                post.setThumbnail(child.getAsJsonObject().get("data").getAsJsonObject().get("thumbnail").getAsString());
-                                posts.add(post);
-                            }
-
-                            JsonElement preRes = result.getAsJsonObject().get("data").getAsJsonObject().get("after");
-
-                            String newAfter = "END";
-
-                            if (preRes != null) {
-                                newAfter = result.getAsJsonObject().get("data").getAsJsonObject().get("after").getAsString();
-                            }
-
-
-                            int tempCount = Integer.parseInt(mCount);
-                            tempCount += posts.size();
-
-                            mPostsAdapter.update(posts, tempCount, newAfter);
-                        }
+                    for (JsonElement child : children) {
+                        Gson gson = new Gson();
+                        Post post = gson.fromJson(child.getAsJsonObject().get("data"), Post.class);
+                        post.setThumbnail(child.getAsJsonObject().get("data").getAsJsonObject().get("thumbnail").getAsString());
+                        posts.add(post);
                     }
-                });
+
+                    JsonElement preRes = result.getAsJsonObject().get("data").getAsJsonObject().get("after");
+
+                    String newAfter = "END";
+
+                    if (preRes != null) {
+                        newAfter = result.getAsJsonObject().get("data").getAsJsonObject().get("after").getAsString();
+                    }
+
+                    int tempCount = Integer.parseInt(mCount);
+                    tempCount += posts.size();
+
+                    mPostsAdapter.update(posts, tempCount, newAfter);
+                }
+            }
+        });
+
 
     }
 
