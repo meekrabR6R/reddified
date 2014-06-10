@@ -14,31 +14,32 @@
         android:src="@drawable/alien_thumb" />
 
     <ImageView
-        android:id="@+id/downvote"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="17dip"
-        android:layout_below="@id/thumb"
-        android:src="@drawable/downvote" />
-
-    <ImageView
         android:id="@+id/upvote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="-30dip"
         android:layout_below="@id/thumb"
-        android:layout_toLeftOf="@id/downvote"
+        android:layout_margin="-6dp"
+        android:padding="-11dp"
         android:src="@drawable/upvote" />
+
+    <ImageView
+        android:id="@+id/downvote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/thumb"
+        android:padding="-11dp"
+        android:layout_margin="-6dp"
+        android:layout_toRightOf="@id/upvote"
+        android:src="@drawable/downvote" />
 
     <TextView
         android:id="@+id/score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignWithParentIfMissing="true"
         android:layout_below="@id/downvote"
-        android:gravity="center_vertical"
-        android:textSize="12sp" />
+        android:gravity="center"
+        android:textSize="17sp" />
 
     <TextView
         android:id="@+id/title"
@@ -76,7 +77,6 @@
         android:id="@+id/subreddit_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignWithParentIfMissing="true"
         android:layout_below="@id/author_label"
         android:layout_toRightOf="@id/thumb"
@@ -89,7 +89,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
         android:layout_alignWithParentIfMissing="true"
         android:layout_below="@id/author"
         android:layout_toRightOf="@id/subreddit_label"
