@@ -24,6 +24,17 @@ public class Reddit {
     }
 
     public void loadPosts(String after, Activity activity, FutureCallback<JsonObject> futureCallback) {
+        load(after, activity, futureCallback, null);
+    }
+
+    public void loadComments(String permalink, Activity activity, FutureCallback<JsonObject> futureCallback) {
+        load(null, activity, futureCallback, permalink);
+    }
+
+    private void load(String after, Activity activity, FutureCallback<JsonObject> futureCallback, String urlMod) {
+        if(urlMod != null)
+            url = url + "" + urlMod;
+
         Ion.with(activity)
                 .load(url)
                 .setHeader("User-Agent", userAgent)
@@ -32,9 +43,5 @@ public class Reddit {
                 .addQuery("after", after)
                 .asJsonObject()
                 .setCallback(futureCallback);
-    }
-
-    public void loadComments(String permalink) {
-
     }
 }
