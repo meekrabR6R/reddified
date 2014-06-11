@@ -23,7 +23,7 @@ public class Reddit {
         this.cookie = cookie;
     }
 
-    public void updatePost(String after, Activity activity, FutureCallback<JsonObject> futureCallback) {
+    public void loadPosts(String after, Activity activity, FutureCallback<JsonObject> futureCallback) {
         Ion.with(activity)
                 .load(url)
                 .setHeader("User-Agent", userAgent)
@@ -32,5 +32,9 @@ public class Reddit {
                 .addQuery("after", after)
                 .asJsonObject()
                 .setCallback(futureCallback);
+    }
+
+    public void loadComments(String permalink) {
+
     }
 }

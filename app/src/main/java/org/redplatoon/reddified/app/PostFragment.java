@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -37,6 +36,7 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
     private String mModHash;
     private String mCookie;
     private Reddit mReddit;
+    private final ArrayList<Post> mPosts = new ArrayList<Post>();
 
     public static PostFragment newInstance(String filter) {
         PostFragment fragment = new PostFragment();
@@ -104,8 +104,7 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
            // mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
-            Toast toast = Toast.makeText(getActivity(), "Click!", Toast.LENGTH_SHORT);
-            toast.show();
+            mReddit.loadComments(mPosts.get(position).permalink);
         }
     }
 
@@ -125,10 +124,9 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
     }
 
     public void updatePosts(String after) {
-        final ArrayList<Post> posts = new ArrayList<Post>();
 
         getActivity().setProgressBarIndeterminateVisibility(true);
-        mReddit.updatePost(after, getActivity(), new FutureCallback<JsonObject>() {
+        mReddit.loadPosts(after, getActivity(), new FutureCallback<JsonObject>() {
             @Override
             public void onCompleted(Exception e, JsonObject result) {
                 getActivity().setProgressBarIndeterminateVisibility(false);
@@ -146,7 +144,7 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
                         Gson gson = new Gson();
                         Post post = gson.fromJson(child.getAsJsonObject().get("data"), Post.class);
                         post.setThumbnail(child.getAsJsonObject().get("data").getAsJsonObject().get("thumbnail").getAsString());
-                        posts.add(post);
+                        mPosts.add(post);
                     }
 
                     JsonElement preRes = result.getAsJsonObject().get("data").getAsJsonObject().get("after");
@@ -158,9 +156,9 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
                     }
 
                     int tempCount = Integer.parseInt(mCount);
-                    tempCount += posts.size();
+                    tempCount += mPosts.size();
 
-                    mPostsAdapter.update(posts, tempCount, newAfter);
+                    mPostsAdapter.update(mPosts, tempCount, newAfter);
                 }
             }
         });
