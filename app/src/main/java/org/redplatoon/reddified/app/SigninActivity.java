@@ -15,7 +15,8 @@ import android.widget.Toast;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
+
+import org.redplatoon.reddified.app.services.Reddit;
 
 
 public class SigninActivity extends Activity {
@@ -23,6 +24,7 @@ public class SigninActivity extends Activity {
     public static final String USER_CREDS = "ReddifiedUser";
     private SharedPreferences mSettings;
     private String mUserAgent;
+    private Reddit mReddit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,7 @@ public class SigninActivity extends Activity {
 
         mSettings = getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
         mUserAgent = getString(R.string.user_agent);
+        mReddit = new Reddit(mUserAgent, null, getString(R.string.reddit_url)+"/api/login", null);
 
         final Button mSignin = (Button) findViewById(R.id.sign_in);
         final EditText mUser = (EditText)findViewById(R.id.username);
@@ -74,13 +77,7 @@ public class SigninActivity extends Activity {
             Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.password_req), Toast.LENGTH_LONG);
             toast.show();
         } else {
-            Ion.with(getApplicationContext(), getString(R.string.reddit_url)+"/api/login")
-                    .setHeader("User-Agent", mUserAgent)
-                    .setBodyParameter("user", user)
-                    .setBodyParameter("passwd", passwd)
-                    .setBodyParameter("api_type", "json")
-                    .asJsonObject()
-                    .setCallback(new FutureCallback<JsonObject>() {
+            mReddit.signIn(getApplicationContext(), user, passwd,   new FutureCallback<JsonObject>() {
                         @Override
                         public void onCompleted(Exception e, JsonObject result) {
                             JsonObject json = result.get("json").getAsJsonObject();

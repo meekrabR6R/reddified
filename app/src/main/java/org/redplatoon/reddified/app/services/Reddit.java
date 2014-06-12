@@ -1,6 +1,7 @@
 package org.redplatoon.reddified.app.services;
 
 import android.app.Activity;
+import android.content.Context;
 
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
@@ -29,6 +30,16 @@ public class Reddit {
 
     public void loadComments(String permalink, Activity activity, FutureCallback<JsonObject> futureCallback) {
         load(null, activity, futureCallback, permalink);
+    }
+
+    public void signIn(Context context, String user, String passwd, FutureCallback<JsonObject> futureCallback) {
+        Ion.with(context, url)
+                .setHeader("User-Agent", userAgent)
+                .setBodyParameter("user", user)
+                .setBodyParameter("passwd", passwd)
+                .setBodyParameter("api_type", "json")
+                .asJsonObject()
+                .setCallback(futureCallback);
     }
 
     private void load(String after, Activity activity, FutureCallback<JsonObject> futureCallback, String urlMod) {
