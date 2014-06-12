@@ -1,7 +1,6 @@
 package org.redplatoon.reddified.app;
 
 import android.app.Activity;
-import android.app.ListFragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,6 +14,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 
+import org.redplatoon.reddified.app.libs.ReddifiedFragment;
 import org.redplatoon.reddified.app.models.Post;
 import org.redplatoon.reddified.app.services.Reddit;
 
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 /**
  * A fragment representing a list of Items.
  */
-public class PostFragment extends ListFragment implements PostsAdapter.PostUpdater {
+public class PostFragment extends ReddifiedFragment implements PostsAdapter.PostUpdater {
 
     public static final String USER_CREDS = "ReddifiedUser";
     private PostsAdapter mPostsAdapter;
@@ -107,19 +107,10 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
         }
     }
 
-    /**
-    * This interface must be implemented by activities that contain this
-    * fragment to allow an interaction in this fragment to be communicated
-    * to the activity and potentially other fragments contained in that
-    * activity.
-    * <p>
-    * See the Android Training lesson <a href=
-    * "http://developer.android.com/training/basics/fragments/communicating.html"
-    * >Communicating with Other Fragments</a> for more information.
-    */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(String id);
+    @Override
+    public void onRefreshStarted(View view) {
+        updatePosts(null);
+        super.onRefreshStarted(view);
     }
 
     public void updatePosts(String after) {
@@ -158,11 +149,25 @@ public class PostFragment extends ListFragment implements PostsAdapter.PostUpdat
                     tempCount += mPosts.size();
 
                     mPostsAdapter.update(mPosts, tempCount, newAfter);
+                    mPullToRefreshLayout.setRefreshComplete(); //look into appropriate naming ~NM 06/12 01:20
                 }
             }
         });
+    }
 
-
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        public void onFragmentInteraction(String id);
     }
 
 }

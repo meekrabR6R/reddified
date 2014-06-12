@@ -76,6 +76,8 @@
     <orderEntry type="library" exported="" name="appcompat-v7-19.1.0" level="project" />
     <orderEntry type="library" exported="" name="espresso-contrib-1.1-bundled" level="project" />
     <orderEntry type="library" exported="" name="support-v4-19.1.0" level="project" />
+    <orderEntry type="library" exported="" name="library-0.9.9" level="project" />
+    <orderEntry type="library" exported="" name="library-0.4.0" level="project" />
     <orderEntry type="library" exported="" name="support-v13-19.1.0" level="project" />
   </component>
 </module>

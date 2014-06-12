@@ -29,6 +29,7 @@ dependencies {
     compile 'com.koushikdutta.ion:ion:1.2.0'
     compile 'com.android.support:support-v13:+'
     compile 'com.android.support:support-v4:+'
+    compile 'com.github.chrisbanes.actionbarpulltorefresh:library:+'
     androidTestCompile files('libs/espresso-contrib-1.1-bundled.jar')
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
