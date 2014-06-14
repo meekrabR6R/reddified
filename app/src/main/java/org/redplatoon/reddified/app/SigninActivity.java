@@ -16,7 +16,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 
-import org.redplatoon.reddified.app.services.Reddit;
+import org.redplatoon.reddified.app.services.RedditService;
 
 
 public class SigninActivity extends Activity {
@@ -24,7 +24,7 @@ public class SigninActivity extends Activity {
     public static final String USER_CREDS = "ReddifiedUser";
     private SharedPreferences mSettings;
     private String mUserAgent;
-    private Reddit mReddit;
+    private RedditService mReddit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class SigninActivity extends Activity {
 
         mSettings = getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
         mUserAgent = getString(R.string.user_agent);
-        mReddit = new Reddit(mUserAgent, null, getString(R.string.reddit_url)+"/api/login", null);
+        mReddit = new RedditService(mUserAgent, null, getString(R.string.reddit_url)+"/api/login", null);
 
         final Button mSignin = (Button) findViewById(R.id.sign_in);
         final EditText mUser = (EditText)findViewById(R.id.username);

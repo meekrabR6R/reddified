@@ -10,14 +10,14 @@ import com.koushikdutta.ion.Ion;
 /**
  * Created by nmiano on 6/10/14 12:35 AM for Reddified
  */
-public class Reddit implements Service {
+public class RedditService implements Service {
 
     private String userAgent;
     private String modHash;
     private String url;
     private String cookie;
 
-    public Reddit(String userAgent, String modHash, String url, String cookie) {
+    public RedditService(String userAgent, String modHash, String url, String cookie) {
         this.userAgent = userAgent;
         this.modHash = modHash;
         this.url = url;
@@ -54,5 +54,9 @@ public class Reddit implements Service {
                 .addQuery("after", after)
                 .asJsonObject()
                 .setCallback(futureCallback);
+    }
+
+    public String getUrl() {
+        return url;
     }
 }

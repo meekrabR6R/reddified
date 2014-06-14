@@ -17,7 +17,7 @@ import com.koushikdutta.async.future.FutureCallback;
 
 import org.redplatoon.reddified.app.libs.ReddifiedFragment;
 import org.redplatoon.reddified.app.models.Post;
-import org.redplatoon.reddified.app.services.Reddit;
+import org.redplatoon.reddified.app.services.RedditService;
 
 import java.util.ArrayList;
 
@@ -37,7 +37,7 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
     private String mUserAgent;
     private String mModHash;
     private String mCookie;
-    private Reddit mReddit;
+    private RedditService mReddit;
     private final ArrayList<Post> mPosts = new ArrayList<Post>();
 
     public static PostFragment newInstance(String filter) {
@@ -72,7 +72,7 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
         }
         mUrl = String.format(getString(R.string.reddit_url))+mFilter+".json";
 
-        mReddit = new Reddit(mUserAgent, mModHash, mUrl, mCookie);
+        mReddit = new RedditService(mUserAgent, mModHash, mUrl, mCookie);
         //mSettings = getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
         setListAdapter(new PostsAdapter(this, getActivity()));
         mPostsAdapter = (PostsAdapter) getListAdapter();

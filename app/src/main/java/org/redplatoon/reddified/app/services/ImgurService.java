@@ -9,11 +9,12 @@ import com.koushikdutta.ion.Ion;
 /**
  * Created by nmiano on 6/14/14 12:53 AM for Reddified
  */
-public class Imgur implements Service {
+public class ImgurService implements Service {
     private String url;
     private String clientID;
 
-    public Imgur(String cid) {
+    public ImgurService(String url, String cid) {
+        this.url = url;
         this.clientID = cid;
     }
 
@@ -24,5 +25,9 @@ public class Imgur implements Service {
                 .setHeader("Client-ID", clientID)
                 .asJsonObject()
                 .setCallback(futureCallback);
+    }
+
+    public String getUrl() {
+        return url;
     }
 }
