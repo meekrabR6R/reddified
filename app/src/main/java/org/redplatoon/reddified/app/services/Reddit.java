@@ -10,7 +10,7 @@ import com.koushikdutta.ion.Ion;
 /**
  * Created by nmiano on 6/10/14 12:35 AM for Reddified
  */
-public class Reddit {
+public class Reddit implements Service {
 
     private String userAgent;
     private String modHash;

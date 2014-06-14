@@ -9,7 +9,7 @@ import com.koushikdutta.ion.Ion;
 /**
  * Created by nmiano on 6/14/14 12:53 AM for Reddified
  */
-public class Imgur {
+public class Imgur implements Service {
     private String url;
     private String clientID;
 
