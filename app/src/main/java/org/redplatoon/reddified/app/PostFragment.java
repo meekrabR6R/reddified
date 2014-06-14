@@ -137,6 +137,7 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
                         Gson gson = new Gson();
                         Post post = gson.fromJson(child.getAsJsonObject().get("data"), Post.class);
                         post.setThumbnail(child.getAsJsonObject().get("data").getAsJsonObject().get("thumbnail").getAsString());
+                        post.setTypeFlag(); //totally kludgy way to handle this.. but GSON makes it weird.. ~NM 06/14/2014
                         mPosts.add(post);
                     }
 

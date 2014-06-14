@@ -211,31 +211,6 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    /*
-    private void signInOrOut() {
-        final Map<String, ?> prefs = mSettings.getAll();
-
-        if(prefs.containsKey("cookie") && prefs.containsKey("modHash")) {
-            final Button mSignout = (Button) findViewById(R.id.sign_out);
-            mSignout.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    SharedPreferences.Editor editor = mSettings.edit();
-                    editor.remove("cookie");
-                    editor.remove("modHash");
-                    editor.commit();
-                    Toast toast = Toast.makeText(getApplicationContext(), "See ya", Toast.LENGTH_SHORT);
-                    toast.show();
-                    //Intent intent = new Intent(getApplicationContext(), SigninActivity.class);
-                    //startActivity(intent);
-                }
-            });
-        } else {
-            Intent intent = new Intent(this, SigninActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            startActivity(intent);
-        }
-    }
-    */
 }
 
 
