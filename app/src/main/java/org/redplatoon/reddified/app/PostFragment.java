@@ -3,6 +3,7 @@ package org.redplatoon.reddified.app;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,7 +22,8 @@ import org.redplatoon.reddified.app.services.Reddit;
 import java.util.ArrayList;
 
 /**
- * A fragment representing a list of Items.
+ * List of posts
+ * created by nmiano
  */
 public class PostFragment extends ReddifiedFragment implements PostsAdapter.PostUpdater {
 
@@ -47,8 +49,7 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
         return fragment;
     }
     /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
+     * Mandatory
      */
     public PostFragment() {
     }
@@ -103,7 +104,8 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-           // mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+            mListener.onFragmentInteraction(null);
+
         }
     }
 
@@ -115,11 +117,12 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
 
     public void updatePosts(String after) {
 
-        getActivity().setProgressBarIndeterminateVisibility(true);
+        final Activity activity = getActivity();
+        activity.setProgressBarIndeterminateVisibility(true);
         mReddit.loadPosts(after, getActivity(), new FutureCallback<JsonObject>() {
             @Override
             public void onCompleted(Exception e, JsonObject result) {
-                getActivity().setProgressBarIndeterminateVisibility(false);
+                activity.setProgressBarIndeterminateVisibility(false);
                 //progress.setVisibility(8);
                 if(e != null) {
                     Log.d("HTTPERR", e.toString());
@@ -167,7 +170,7 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(String id);
+        public void onFragmentInteraction(Uri uri);
     }
 
 }

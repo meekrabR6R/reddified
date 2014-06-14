@@ -2,11 +2,13 @@ package org.redplatoon.reddified.app;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.ViewPager;
@@ -20,7 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements PostFragment.OnFragmentInteractionListener {
+public class MainActivity extends Activity implements PostFragment.OnFragmentInteractionListener, CommentsFragment.OnFragmentInteractionListener {
 
     public static final String USER_CREDS = "ReddifiedUser";
     private SharedPreferences mSettings;
@@ -158,8 +160,19 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
         return super.onOptionsItemSelected(item);
     }
 
-    public void onFragmentInteraction(String id) {
-        //TODO: Something..
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+        // Create new fragment and transaction
+        Fragment newFragment = new CommentsFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack
+        transaction.replace(R.id.pager, newFragment);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
