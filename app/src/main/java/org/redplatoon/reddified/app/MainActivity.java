@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.ViewPager;
@@ -22,7 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements PostFragment.OnFragmentInteractionListener, CommentsFragment.OnFragmentInteractionListener {
+public class MainActivity extends Activity implements PostFragment.OnFragmentInteractionListener, ItemFragment.OnFragmentInteractionListener {
 
     public static final String USER_CREDS = "ReddifiedUser";
     private SharedPreferences mSettings;
@@ -34,9 +33,11 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String[] mDrawerItems;
+    private Fragment mItemFragment;
     public static String[] DRAWER_CONTENTS;
-
+    private ActionBar.TabListener mTabListener;
     private static final int TABS_COUNT = 5;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,7 +112,7 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
                 });
 
         // Create a tab listener that is called when the user changes tabs.
-        ActionBar.TabListener tabListener = new ActionBar.TabListener() {
+        mTabListener = new ActionBar.TabListener() {
             public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
                 // When the tab is selected, switch to the
                 // corresponding page in the ViewPager.
@@ -127,11 +128,7 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
             }
         };
 
-        actionBar.addTab(actionBar.newTab().setText(getString(R.string.hot_tab)).setTabListener(tabListener));
-        actionBar.addTab(actionBar.newTab().setText(getString(R.string.new_tab)).setTabListener(tabListener));
-        actionBar.addTab(actionBar.newTab().setText(getString(R.string.rising_tab)).setTabListener(tabListener));
-        actionBar.addTab(actionBar.newTab().setText(getString(R.string.controversial_tab)).setTabListener(tabListener));
-        actionBar.addTab(actionBar.newTab().setText(getString(R.string.top_tab)).setTabListener(tabListener));
+        addTabsToActionBar(actionBar);
     }
 
     @Override
@@ -161,18 +158,28 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void onPostFragmentInteraction() {
         // Create new fragment and transaction
-        Fragment newFragment = new CommentsFragment();
+        mItemFragment = ItemFragment.newInstance();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
         // Replace whatever is in the fragment_container view with this fragment,
         // and add the transaction to the back stack
-        transaction.replace(R.id.pager, newFragment);
+        mViewPager.setVisibility(View.GONE);
+        getActionBar().removeAllTabs();
+        transaction.replace(R.id.item_container, mItemFragment);
         transaction.addToBackStack(null);
 
         // Commit the transaction
         transaction.commit();
+    }
+
+    @Override
+    public void onItemFragmentInteraction() {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.remove(mItemFragment);
+        mViewPager.setVisibility(View.VISIBLE);
+        addTabsToActionBar(getActionBar());
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -211,6 +218,21 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+    @Override
+    public void onBackPressed() {
+        if(mItemFragment != null)
+            onItemFragmentInteraction();
+        
+        super.onBackPressed();
+    }
+
+    private void addTabsToActionBar(ActionBar actionBar) {
+        actionBar.addTab(actionBar.newTab().setText(getString(R.string.hot_tab)).setTabListener(mTabListener));
+        actionBar.addTab(actionBar.newTab().setText(getString(R.string.new_tab)).setTabListener(mTabListener));
+        actionBar.addTab(actionBar.newTab().setText(getString(R.string.rising_tab)).setTabListener(mTabListener));
+        actionBar.addTab(actionBar.newTab().setText(getString(R.string.controversial_tab)).setTabListener(mTabListener));
+        actionBar.addTab(actionBar.newTab().setText(getString(R.string.top_tab)).setTabListener(mTabListener));
+    }
 }
 
 

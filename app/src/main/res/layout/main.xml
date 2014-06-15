@@ -12,7 +12,13 @@
         android:layout_height="0px"
         android:layout_weight="1">
     </android.support.v4.view.ViewPager>
-    
+
+    <FrameLayout
+        android:id="@+id/item_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
     <!-- The navigation drawer -->
     <ListView android:id="@+id/left_drawer"
         android:layout_width="240dp"

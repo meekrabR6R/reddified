@@ -3,7 +3,6 @@ package org.redplatoon.reddified.app;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -104,7 +103,7 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(null);
+            mListener.onPostFragmentInteraction();
 
         }
     }
@@ -171,7 +170,7 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+        public void onPostFragmentInteraction();
     }
 
 }

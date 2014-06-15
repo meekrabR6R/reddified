@@ -12,21 +12,21 @@ import android.view.ViewGroup;
 /**
  * Created by nmiano on 06/11/2014
  */
-public class CommentsFragment extends Fragment {
+public class ItemFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
     /**
      * Factory method
      */
-    public static CommentsFragment newInstance(String param1, String param2) {
-        CommentsFragment fragment = new CommentsFragment();
+    public static ItemFragment newInstance() {
+        ItemFragment fragment = new ItemFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
     }
 
-    public CommentsFragment() {
+    public ItemFragment() {
         // Required empty public constructor
     }
 
@@ -44,13 +44,13 @@ public class CommentsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_comments, container, false);
+        return inflater.inflate(R.layout.fragment_item, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(null);
+            mListener.onItemFragmentInteraction();
         }
     }
 
@@ -72,7 +72,7 @@ public class CommentsFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        public void onFragmentInteraction(Uri uri);
+        public void onItemFragmentInteraction();
     }
 
 }
