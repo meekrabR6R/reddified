@@ -6,11 +6,12 @@ import com.google.gson.annotations.SerializedName;
  * Created by nmiano on 4/18/14.
  */
 public class Post {
-    public String title ,author, id, subreddit, permalink, name;
+    public String title ,author, id, subreddit, name;
     public int ups, downs, score, created;
     public boolean visited;
 
     private String url;
+    private String permalink = "PERMALINK";
 
     @SerializedName("over_18")
     private boolean nsfw;
@@ -44,6 +45,7 @@ public class Post {
     }
 
     public void setTypeFlag() {
+        isWebPage = false;
         if(url.endsWith(".jpg") || url.endsWith(".png"))
             isImage = true;
         else if(url.endsWith(".gif"))
@@ -56,8 +58,20 @@ public class Post {
             isWebPage = true;
     }
 
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public String getUrl() {
         return url;
+    }
+
+    public void setPermalink(String permalink) {
+        this.permalink = permalink;
+    }
+
+    public String getPermalink() {
+        return permalink;
     }
 
     public boolean isNsfw() {
