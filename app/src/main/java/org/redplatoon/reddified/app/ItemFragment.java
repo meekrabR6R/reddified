@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import org.redplatoon.reddified.app.models.Post;
+import org.redplatoon.reddified.app.services.MediaService;
 
 
 /**
@@ -15,13 +18,23 @@ import android.view.ViewGroup;
 public class ItemFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
+    private MediaService mMediaService;
+    private String mPostUrl;
+    private ImageView mImageOrGifView;
+    private boolean mIsImage = false;
+    private boolean mIsGif = false;
 
     /**
      * Factory method
      */
-    public static ItemFragment newInstance() {
+    public static ItemFragment newInstance(Post post) {
         ItemFragment fragment = new ItemFragment();
         Bundle args = new Bundle();
+
+        args.putBoolean("IS_IMAGE", post.isImage());
+        args.putBoolean("IS_GIF", post.isGif());
+        args.putString("POST_URL", post.getUrl());
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -34,17 +47,29 @@ public class ItemFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            //mParam1 = getArguments().getString(ARG_PARAM1);
-            //mParam2 = getArguments().getString(ARG_PARAM2);
+            mIsImage = getArguments().getBoolean("IS_IMAGE");
+            mIsGif = getArguments().getBoolean("IS_GIF");
+            mPostUrl = getArguments().getString("POST_URL");
         }
-
+        mMediaService = new MediaService();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_item, container, false);
+        mImageOrGifView = (ImageView) rootView.findViewById(R.id.image_or_gif);
+
+        if(mIsGif || mIsImage)
+            mImageOrGifView.setVisibility(View.VISIBLE);
+
+        if(mIsImage)
+            mMediaService.loadImage(mImageOrGifView, mPostUrl);
+        else if(mIsGif)
+            mMediaService.loadGif(mImageOrGifView, mPostUrl);
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_item, container, false);
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -36,7 +36,7 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
     private String mUserAgent;
     private String mModHash;
     private String mCookie;
-    private RedditService mReddit;
+    private RedditService mRedditService;
     private final ArrayList<Post> mPosts = new ArrayList<Post>();
 
     public static PostFragment newInstance(String filter) {
@@ -71,7 +71,7 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
         }
         mUrl = String.format(getString(R.string.reddit_url))+mFilter+".json";
 
-        mReddit = new RedditService(mUserAgent, mModHash, mUrl, mCookie);
+        mRedditService = new RedditService(mUserAgent, mModHash, mUrl, mCookie);
         //mSettings = getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
         setListAdapter(new PostsAdapter(this, getActivity()));
         mPostsAdapter = (PostsAdapter) getListAdapter();
@@ -103,7 +103,7 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onPostFragmentInteraction();
+            mListener.onPostFragmentInteraction(mPosts.get(position));
 
         }
     }
@@ -118,7 +118,7 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
 
         final Activity activity = getActivity();
         activity.setProgressBarIndeterminateVisibility(true);
-        mReddit.loadPosts(after, getActivity(), new FutureCallback<JsonObject>() {
+        mRedditService.loadPosts(after, getActivity(), new FutureCallback<JsonObject>() {
             @Override
             public void onCompleted(Exception e, JsonObject result) {
                 activity.setProgressBarIndeterminateVisibility(false);
@@ -150,7 +150,7 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
 
                     int tempCount = Integer.parseInt(mCount);
                     tempCount += mPosts.size();
-
+                    mCount = String.valueOf(tempCount);
                     mPostsAdapter.update(mPosts, tempCount, newAfter);
                     mPullToRefreshLayout.setRefreshComplete(); //look into appropriate naming ~NM 06/12 01:20
                 }
@@ -169,8 +169,7 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onPostFragmentInteraction();
+        public void onPostFragmentInteraction(Post post);
     }
 
 }

@@ -21,6 +21,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.redplatoon.reddified.app.models.Post;
+
 public class MainActivity extends Activity implements PostFragment.OnFragmentInteractionListener, ItemFragment.OnFragmentInteractionListener {
 
     public static final String USER_CREDS = "ReddifiedUser";
@@ -158,9 +160,9 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
     }
 
     @Override
-    public void onPostFragmentInteraction() {
+    public void onPostFragmentInteraction(Post post) {
         // Create new fragment and transaction
-        mItemFragment = ItemFragment.newInstance();
+        mItemFragment = ItemFragment.newInstance(post);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
         // Replace whatever is in the fragment_container view with this fragment,
@@ -222,7 +224,7 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
     public void onBackPressed() {
         if(mItemFragment != null)
             onItemFragmentInteraction();
-        
+
         super.onBackPressed();
     }
 

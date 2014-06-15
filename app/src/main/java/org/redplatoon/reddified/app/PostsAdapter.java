@@ -8,9 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.koushikdutta.ion.Ion;
-
 import org.redplatoon.reddified.app.models.Post;
+import org.redplatoon.reddified.app.services.MediaService;
 
 import java.util.ArrayList;
 
@@ -20,6 +19,7 @@ import java.util.ArrayList;
 public class PostsAdapter extends ArrayAdapter<Post> {
 
     private LayoutInflater mLayoutInflater;
+    private MediaService mMediaService;
     private final Context mContext;
     private ArrayList<Post> mPosts = new ArrayList<Post>();
     private PostUpdater mPostUpdater;
@@ -34,6 +34,7 @@ public class PostsAdapter extends ArrayAdapter<Post> {
         super(context, R.layout.fragment_post);
         mContext = context;
         mLayoutInflater = LayoutInflater.from(mContext);
+        mMediaService = new MediaService();
         mPostUpdater = postUpdater;
         mPostUpdater.updatePosts(mAfter);
     }
@@ -79,11 +80,14 @@ public class PostsAdapter extends ArrayAdapter<Post> {
         ImageView imageView = (ImageView) post.findViewById(R.id.thumb);
         String thumbnail = currPost.getThumbnail();
 
+        mMediaService.loadImage(imageView, currPost.getThumbnail());
+
+        /*
         Ion.with(imageView)
                 .placeholder(R.drawable.alien_thumb)
                 .error(R.drawable.alien_thumb)
                 .load(thumbnail);
-
+        */
         return post;
     }
 
