@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by nmiano on 4/18/14.
  */
 public class Post {
-    public String title ,author, id, subreddit, name;
+    public String title ,author, id, subreddit, name, domain;
     public int ups, downs, score, created;
     public boolean visited;
 
@@ -31,6 +31,10 @@ public class Post {
 
     public void setTypeFlag() {
         isWebPage = false;
+
+        if(domain.equals("i.imgur.com") || domain.equals("imgur.com"))
+            url = url + ".png";
+
         if(url.endsWith(".jpg") || url.endsWith(".png"))
             isImage = true;
         else if(url.endsWith(".gif"))
