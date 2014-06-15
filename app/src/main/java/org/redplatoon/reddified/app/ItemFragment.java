@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
+
 import org.redplatoon.reddified.app.models.Post;
 import org.redplatoon.reddified.app.services.MediaService;
 
@@ -21,8 +23,10 @@ public class ItemFragment extends Fragment {
     private MediaService mMediaService;
     private String mPostUrl;
     private ImageView mImageOrGifView;
+    private WebView mWebView;
     private boolean mIsImage = false;
     private boolean mIsGif = false;
+    private boolean mIsWebPage = false;
 
     /**
      * Factory method
@@ -33,6 +37,7 @@ public class ItemFragment extends Fragment {
 
         args.putBoolean("IS_IMAGE", post.isImage());
         args.putBoolean("IS_GIF", post.isGif());
+        args.putBoolean("IS_WEBPAGE", post.isWebPage());
         args.putString("POST_URL", post.getUrl());
 
         fragment.setArguments(args);
@@ -49,6 +54,7 @@ public class ItemFragment extends Fragment {
         if (getArguments() != null) {
             mIsImage = getArguments().getBoolean("IS_IMAGE");
             mIsGif = getArguments().getBoolean("IS_GIF");
+            mIsWebPage = getArguments().getBoolean("IS_WEBPAGE");
             mPostUrl = getArguments().getString("POST_URL");
         }
         mMediaService = new MediaService();
@@ -59,15 +65,19 @@ public class ItemFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_item, container, false);
         mImageOrGifView = (ImageView) rootView.findViewById(R.id.image_or_gif);
+        mWebView = (WebView) rootView.findViewById(R.id.webview);
 
-        if(mIsGif || mIsImage)
+        if(mIsGif || mIsImage) {
             mImageOrGifView.setVisibility(View.VISIBLE);
 
-        if(mIsImage)
-            mMediaService.loadImage(mImageOrGifView, mPostUrl);
-        else if(mIsGif)
-            mMediaService.loadGif(mImageOrGifView, mPostUrl);
-
+            if (mIsImage)
+                mMediaService.loadImage(mImageOrGifView, mPostUrl);
+            else if (mIsGif)
+                mMediaService.loadGif(mImageOrGifView, mPostUrl);
+        } else if(mIsWebPage) {
+            mWebView.setVisibility(View.VISIBLE);
+            mWebView.loadUrl(mPostUrl);
+        }
         // Inflate the layout for this fragment
         return rootView;
     }

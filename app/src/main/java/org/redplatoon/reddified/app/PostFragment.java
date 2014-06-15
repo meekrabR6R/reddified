@@ -150,7 +150,7 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
 
                     int tempCount = Integer.parseInt(mCount);
                     tempCount += mPosts.size();
-                    mCount = String.valueOf(tempCount);
+
                     mPostsAdapter.update(mPosts, tempCount, newAfter);
                     mPullToRefreshLayout.setRefreshComplete(); //look into appropriate naming ~NM 06/12 01:20
                 }

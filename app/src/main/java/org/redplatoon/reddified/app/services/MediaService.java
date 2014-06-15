@@ -36,8 +36,8 @@ public class MediaService implements Service {
 
     public void loadGif(ImageView imageView, String url) {
         Ion.with(imageView)
-                .resize(512, 512) //change?
-                .centerCrop()
+                //.resize(512, 512) //change?
+                //.centerCrop()
                 .load(url);
     }
 }
