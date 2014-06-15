@@ -29,6 +29,20 @@ public class Post {
     private boolean isText = false;
     private boolean isVideo = false;
 
+    public void setTypeFlag() {
+        isWebPage = false;
+        if(url.endsWith(".jpg") || url.endsWith(".png"))
+            isImage = true;
+        else if(url.endsWith(".gif"))
+            isGif = true;
+        else if(url.contains(permalink))
+            isText = true;
+        else if(url.contains("youtube.com/watch"))
+            isVideo = true;
+        else
+            isWebPage = true;
+    }
+
     public void setThumbnail(String path) {
         if(path.equals("nsfw")) {
             thumbnail = "http://www.reddit.com/static/nsfw2.png";
@@ -44,19 +58,6 @@ public class Post {
         return thumbnail;
     }
 
-    public void setTypeFlag() {
-        isWebPage = false;
-        if(url.endsWith(".jpg") || url.endsWith(".png"))
-            isImage = true;
-        else if(url.endsWith(".gif"))
-            isGif = true;
-        else if(url.contains(permalink))
-            isText = true;
-        else if(url.contains("youtube.com/watch"))
-            isVideo = true;
-        else
-            isWebPage = true;
-    }
 
     public void setUrl(String url) {
         this.url = url;
