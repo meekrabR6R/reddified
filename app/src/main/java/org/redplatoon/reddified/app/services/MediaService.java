@@ -1,10 +1,13 @@
 package org.redplatoon.reddified.app.services;
 
+import android.app.Activity;
 import android.media.Image;
 import android.widget.ImageView;
 
+import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
+import org.redplatoon.reddified.app.R;
 import org.redplatoon.reddified.app.models.Gif;
 
 import java.util.ArrayList;
@@ -15,6 +18,7 @@ import java.util.ArrayList;
 public class MediaService implements Service {
     private ArrayList<Image> pics = new ArrayList<Image>();
     private ArrayList<Gif> gifs = new ArrayList<Gif>();
+    private Activity activity;
 
     public ArrayList<Image> getPics() {
         return pics;
@@ -25,16 +29,34 @@ public class MediaService implements Service {
     }
 
     public void loadImage(ImageView imageView, String url) {
+
         Ion.with(imageView)
-                //.animateLoad(spinAnimation)
-                //.animateIn(fadeInAnimation)
+                //.animateLoad(R.anim.rotation)
+                .animateIn(R.anim.fadein)
                 .load(url);
+
     }
 
+    public void loadImageWithCallback(ImageView imageView, String url, FutureCallback<ImageView> futureCallback) {
+        Ion.with(imageView)
+                //.animateLoad(R.anim.rotation)
+                .animateIn(R.anim.fadein)
+                .load(url)
+                .setCallback(futureCallback);
+
+    }
     public void loadGif(ImageView imageView, String url) {
         Ion.with(imageView)
                 //.resize(512, 512) //change?
                 //.centerCrop()
                 .load(url);
+    }
+
+    public void loadGifWithCallback(ImageView imageView, String url, FutureCallback<ImageView> futureCallback) {
+        Ion.with(imageView)
+                //.resize(512, 512) //change?
+                //.centerCrop()
+                .load(url)
+                .setCallback(futureCallback);
     }
 }

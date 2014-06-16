@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+
+import com.koushikdutta.async.future.FutureCallback;
 
 import org.redplatoon.reddified.app.models.Post;
 import org.redplatoon.reddified.app.services.MediaService;
@@ -64,19 +67,30 @@ public class ItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_item, container, false);
+        final ProgressBar progressBar;
         mImageOrGifView = (ImageView) rootView.findViewById(R.id.image_or_gif);
         mWebView = (WebView) rootView.findViewById(R.id.webview);
+        progressBar = (ProgressBar) rootView.findViewById(R.id.progress_bar);
+        progressBar.setVisibility(View.VISIBLE);
+
+        FutureCallback<ImageView> futureCallback = new FutureCallback<ImageView>() {
+            @Override
+            public void onCompleted(Exception e, ImageView result) {
+                progressBar.setVisibility(View.GONE);
+            }
+        };
 
         if(mIsGif || mIsImage) {
             mImageOrGifView.setVisibility(View.VISIBLE);
 
-            if (mIsImage)
-                mMediaService.loadImage(mImageOrGifView, mPostUrl);
-            else if (mIsGif)
-                mMediaService.loadGif(mImageOrGifView, mPostUrl);
+            if (mIsImage) {
+                mMediaService.loadImageWithCallback(mImageOrGifView, mPostUrl, futureCallback);
+            } else if (mIsGif)
+                mMediaService.loadGifWithCallback(mImageOrGifView, mPostUrl, futureCallback);
         } else if(mIsWebPage) {
             mWebView.setVisibility(View.VISIBLE);
             mWebView.loadUrl(mPostUrl);
+            progressBar.setVisibility(View.GONE);
         }
         // Inflate the layout for this fragment
         return rootView;

@@ -18,6 +18,20 @@
         android:layout_height="fill_parent"
         android:visibility="gone"
         />
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="6dp"
+        android:indeterminate="true"
+        android:visibility="gone"
+        android:maxHeight="60dp"
+        android:maxWidth="60dp"
+        android:minHeight="60dp"
+        android:minWidth="60dp" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
