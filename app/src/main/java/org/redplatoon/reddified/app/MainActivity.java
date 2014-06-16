@@ -156,11 +156,13 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
         if (id == R.id.action_settings) {
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onPostFragmentInteraction(Post post) {
+        mDrawerToggle.setDrawerIndicatorEnabled(false);
         // Create new fragment and transaction
         mItemFragment = ItemFragment.newInstance(post);
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -222,9 +224,10 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
 
     @Override
     public void onBackPressed() {
-        if(mItemFragment != null)
+        if(mItemFragment != null) {
             onItemFragmentInteraction();
-
+            mDrawerToggle.setDrawerIndicatorEnabled(true);
+        }
         super.onBackPressed();
     }
 

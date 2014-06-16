@@ -5,7 +5,6 @@ import android.widget.ImageView;
 
 import com.koushikdutta.ion.Ion;
 
-import org.redplatoon.reddified.app.R;
 import org.redplatoon.reddified.app.models.Gif;
 
 import java.util.ArrayList;
@@ -27,8 +26,6 @@ public class MediaService implements Service {
 
     public void loadImage(ImageView imageView, String url) {
         Ion.with(imageView)
-                .placeholder(R.drawable.alien_thumb)
-                .error(R.drawable.alien_thumb)
                 //.animateLoad(spinAnimation)
                 //.animateIn(fadeInAnimation)
                 .load(url);

@@ -1,5 +1,6 @@
 package org.redplatoon.reddified.app.models;
 
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -10,6 +11,8 @@ public class Post {
     public int ups, downs, score, created;
     public boolean visited;
 
+    @SerializedName("media_embed")
+    private JsonObject mediaEmbed;
     private String url;
     private String permalink = "PERMALINK";
 
