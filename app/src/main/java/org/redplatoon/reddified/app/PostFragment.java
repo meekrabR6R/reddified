@@ -142,16 +142,17 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
 
                     JsonElement preRes = result.getAsJsonObject().get("data").getAsJsonObject().get("after");
 
-                    String newAfter = "END";
+                    //String newAfter = "END";
 
                     if (preRes != null) {
-                        newAfter = result.getAsJsonObject().get("data").getAsJsonObject().get("after").getAsString();
+                        int tempCount = Integer.parseInt(mCount);
+                        tempCount += mPosts.size();
+
+                        mPostsAdapter.update(mPosts, tempCount, preRes.getAsString());//newAfter);
+                        //newAfter = result.getAsJsonObject().get("data").getAsJsonObject().get("after").getAsString();
                     }
 
-                    int tempCount = Integer.parseInt(mCount);
-                    tempCount += mPosts.size();
 
-                    mPostsAdapter.update(mPosts, tempCount, newAfter);
                     mPullToRefreshLayout.setRefreshComplete(); //look into appropriate naming ~NM 06/12 01:20
                 }
             }
