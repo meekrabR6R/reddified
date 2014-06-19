@@ -88,6 +88,8 @@ public class PostsAdapter extends ArrayAdapter<Post> {
 
         mMediaService.loadImage(holder.thumb, currPost.getThumbnail());
 
+        convertView.setTag(holder);
+        
         return convertView;
     }
 
