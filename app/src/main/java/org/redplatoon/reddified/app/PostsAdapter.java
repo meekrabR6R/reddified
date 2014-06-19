@@ -58,14 +58,12 @@ public class PostsAdapter extends ArrayAdapter<Post> {
         if ((position + 10 == mPosts.size()) && !mAfter.equals("END"))
             mPostUpdater.updatePosts(mAfter);
 
-        // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
             mLayoutInflater = (LayoutInflater) mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             convertView = mLayoutInflater.inflate(R.layout.fragment_post, parent, false);
         }
-
 
         Post currPost = mPosts.get(position);
 
