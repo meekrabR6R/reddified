@@ -58,37 +58,35 @@ public class PostsAdapter extends ArrayAdapter<Post> {
         if ((position + 10 == mPosts.size()) && !mAfter.equals("END"))
             mPostUpdater.updatePosts(mAfter);
 
-        mLayoutInflater = (LayoutInflater) mContext
-                          .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        // Check if an existing view is being reused, otherwise inflate the view
+        if (convertView == null) {
+            mLayoutInflater = (LayoutInflater) mContext
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View post = mLayoutInflater.inflate(R.layout.fragment_post, parent, false);
+            convertView = mLayoutInflater.inflate(R.layout.fragment_post, parent, false);
+        }
+
 
         Post currPost = mPosts.get(position);
 
-        TextView titleView = (TextView) post.findViewById(R.id.title);
-        titleView.setText(currPost.title);
+        ViewHolder holder = new ViewHolder();
+        holder.title = (TextView) convertView.findViewById(R.id.title);
+        holder.title.setText(currPost.title);
 
-        TextView authorView = (TextView) post.findViewById(R.id.author);
-        authorView.setText(currPost.author);
+        holder.author = (TextView) convertView.findViewById(R.id.author);
+        holder.author.setText(currPost.author);
 
-        TextView subredditView = (TextView) post.findViewById(R.id.subreddit);
-        subredditView.setText(currPost.subreddit);
+        holder.subreddit = (TextView) convertView.findViewById(R.id.subreddit);
+        holder.subreddit.setText(currPost.subreddit);
 
-        TextView scoreView = (TextView) post.findViewById(R.id.score);
-        scoreView.setText(String.valueOf(currPost.score));
+        holder.score = (TextView) convertView.findViewById(R.id.score);
+        holder.score.setText(String.valueOf(currPost.score));
 
-        ImageView imageView = (ImageView) post.findViewById(R.id.thumb);
-        String thumbnail = currPost.getThumbnail();
+        holder.thumb = (ImageView) convertView.findViewById(R.id.thumb);
 
-        mMediaService.loadImage(imageView, currPost.getThumbnail());
+        mMediaService.loadImage(holder.thumb, currPost.getThumbnail());
 
-        /*
-        Ion.with(imageView)
-                .placeholder(R.drawable.alien_thumb)
-                .error(R.drawable.alien_thumb)
-                .load(thumbnail);
-        */
-        return post;
+        return convertView;
     }
 
     public void update(ArrayList<Post> posts, int count, String after) {
@@ -96,5 +94,13 @@ public class PostsAdapter extends ArrayAdapter<Post> {
         mAfter = after;
         mPosts.addAll(posts);
         notifyDataSetChanged();
+    }
+
+    static class ViewHolder {
+        TextView  title;
+        TextView  author;
+        TextView  subreddit;
+        TextView  score;
+        ImageView thumb;
     }
 }
