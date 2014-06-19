@@ -68,6 +68,10 @@ public class PostsAdapter extends ArrayAdapter<Post> {
         Post currPost = mPosts.get(position);
 
         ViewHolder holder = new ViewHolder();
+
+        holder.index = (TextView) convertView.findViewById(R.id.index);
+        holder.index.setText(String.valueOf(position+1));
+
         holder.title = (TextView) convertView.findViewById(R.id.title);
         holder.title.setText(currPost.title);
 
@@ -99,6 +103,7 @@ public class PostsAdapter extends ArrayAdapter<Post> {
         TextView  author;
         TextView  subreddit;
         TextView  score;
+        TextView  index;
         ImageView thumb;
     }
 }
