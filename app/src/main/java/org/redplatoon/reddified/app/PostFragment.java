@@ -152,7 +152,6 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
                         //newAfter = result.getAsJsonObject().get("data").getAsJsonObject().get("after").getAsString();
                     }
 
-
                     mPullToRefreshLayout.setRefreshComplete(); //look into appropriate naming ~NM 06/12 01:20
                 }
             }

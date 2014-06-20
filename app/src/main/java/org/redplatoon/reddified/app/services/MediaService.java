@@ -31,7 +31,7 @@ public class MediaService implements Service {
     public void loadImage(ImageView imageView, String url) {
 
         Ion.with(imageView)
-                //.animateLoad(R.anim.rotation)
+                .animateLoad(R.anim.rotation)
                 .animateIn(R.anim.fadein)
                 .load(url);
 
