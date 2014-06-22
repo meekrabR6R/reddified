@@ -1,5 +1,5 @@
 .gradle
 /local.properties
 /.idea/workspace.xml
-/app/src/main/res/values/imgur.xml
+/app/src/main/res/values/api_tokens.xml
 .DS_Store
