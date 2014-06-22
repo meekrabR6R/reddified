@@ -36,7 +36,7 @@ public class PostsAdapter extends ArrayAdapter<Post> {
         mLayoutInflater = LayoutInflater.from(mContext);
         mMediaService = new MediaService();
         mPostUpdater = postUpdater;
-        mPostUpdater.updatePosts(mAfter);
+        mPostUpdater.updatePosts(null);
     }
 
     @Override
@@ -55,8 +55,11 @@ public class PostsAdapter extends ArrayAdapter<Post> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if ((position + 10 == mPosts.size()) && !mAfter.equals("END"))
+        System.out.println("MAFTER: " + mAfter);
+        if ((position + 5 == mPosts.size())) {//&& !mAfter.equals("END"))
+            System.out.println("MSUPERAFTER: " + mAfter);
             mPostUpdater.updatePosts(mAfter);
+        }
 
         if (convertView == null) {
             mLayoutInflater = (LayoutInflater) mContext
@@ -96,6 +99,7 @@ public class PostsAdapter extends ArrayAdapter<Post> {
     public void update(ArrayList<Post> posts, int count, String after) {
         mCount = count;
         mAfter = after;
+        mPosts.clear();
         mPosts.addAll(posts);
         notifyDataSetChanged();
     }
