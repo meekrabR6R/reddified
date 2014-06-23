@@ -66,7 +66,7 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
         else
             mDrawerItems = getResources().getStringArray(R.array.signed_out_drawer_menu);
 
-        DRAWER_CONTENTS =mDrawerItems;
+        DRAWER_CONTENTS = mDrawerItems;
 
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.drawer_list_item, mDrawerItems));
