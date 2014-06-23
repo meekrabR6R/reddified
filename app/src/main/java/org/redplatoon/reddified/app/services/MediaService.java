@@ -33,6 +33,8 @@ public class MediaService implements Service {
     public static void setGlobalIonDebugger(Context context) {
         if (context.getPackageName().endsWith(".debug")) {
             Ion.getDefault(context).configure().setLogging("Reddified", Log.DEBUG);
+        } else {
+            //TODO
         }
     }
 
