@@ -103,8 +103,9 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onPostFragmentInteraction((Post)l.getItemAtPosition(position));
-
+            Post post = (Post)l.getItemAtPosition(position);
+            mListener.onPostFragmentInteraction(post);
+            mListener.onTrackablePostInteraction("Post Click", post);
         }
     }
 
@@ -170,7 +171,7 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
      */
     public interface OnFragmentInteractionListener {
         public void onPostFragmentInteraction(Post post);
-        public void onTrackablePostInteraction(String trackedInteraction);
+        public void onTrackablePostInteraction(String trackedInteraction, Post post);
     }
 
 }

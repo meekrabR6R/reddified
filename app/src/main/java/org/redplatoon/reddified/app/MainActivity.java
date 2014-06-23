@@ -185,8 +185,9 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
     }
 
     @Override
-    public void onTrackablePostInteraction(String trackedInteraction) {
-        //TODO: handle tracked actions
+    public void onTrackablePostInteraction(String trackedInteraction, Post post) {
+        if(trackedInteraction.equals("Post Click"))
+            mReddifiedMixpanel.trackPostClick(post);
     }
 
     @Override

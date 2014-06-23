@@ -8,6 +8,7 @@ import com.mixpanel.android.mpmetrics.MixpanelAPI;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.redplatoon.reddified.app.R;
+import org.redplatoon.reddified.app.models.Post;
 
 /**
  * Created by nmiano on 6/22/14 5:19 PM for Reddified
@@ -76,7 +77,6 @@ public class MixPanelService implements Service {
          * Track 'Launched' or 'Resumed' app opens
          */
         public void trackAppOpen() {
-
             String openType;
             if(isFromPausedState)
                 openType = "Resumed";
@@ -92,6 +92,21 @@ public class MixPanelService implements Service {
             }
         }
 
+        /**
+         * Track 'Post Click'
+         */
+        public void trackPostClick(Post post) {
+            try {
+                JSONObject props = new JSONObject();
+                props.put("Poster", post.author);
+                props.put("Subreddit", post.subreddit);
+                props.put("Post Title", post.title);
+                track("Post Click", props);
+            } catch(JSONException e) {
+                Log.d("ReddifiedMixPanelTracker", e.getMessage());
+            }
+        }
+
         public void setLaunchStateToResume() {
             isFromPausedState = true;
         }
@@ -100,6 +115,10 @@ public class MixPanelService implements Service {
             return isFromPausedState;
         }
 
+        /**
+         * For use in .debug builds (for testing, etc.)
+         * @param logging
+         */
         public void setLogging(boolean logging) {
             this.logging = logging;
         }
@@ -118,7 +137,7 @@ public class MixPanelService implements Service {
                 mixpanelAPI.track(key, props);
                 Log.d("ReddifiedMixpanelTracker", "Open action tracked: " + key);
             } else
-                Log.d("ReddifiedMixpanelTracker", "Tracking disabled");
+                Log.d("ReddifiedMixpanelTracker", "Tracking disabled: " + key);
         }
     }
 }
