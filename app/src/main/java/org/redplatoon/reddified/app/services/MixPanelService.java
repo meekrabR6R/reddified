@@ -15,7 +15,7 @@ import org.redplatoon.reddified.app.R;
 public class MixPanelService implements Service {
 
     /**
-     * Factory method to create an instance of MixpanelAPI.
+     * Factory method to create an instance of ReddifiedMixpanelAPI.
      * @param context
      * @return MixpanelAPI mixpanelAPI
      */
@@ -72,6 +72,9 @@ public class MixPanelService implements Service {
                 setLogging(true);
         }
 
+        /**
+         * Track 'Launched' or 'Resumed' app opens
+         */
         public void trackAppOpen() {
 
             String openType;
@@ -92,6 +95,7 @@ public class MixPanelService implements Service {
         public void setLaunchStateToResume() {
             isFromPausedState = true;
         }
+
         public boolean isFromPausedState() {
             return isFromPausedState;
         }
@@ -104,6 +108,11 @@ public class MixPanelService implements Service {
             return mixpanelAPI;
         }
 
+        /**
+         * Generic mixpanel track method
+         * @param key
+         * @param props
+         */
         private void track(String key, JSONObject props) {
             if (logging) {
                 mixpanelAPI.track(key, props);
