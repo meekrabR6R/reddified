@@ -35,7 +35,7 @@ public class Post {
     public void setTypeFlag() {
         isWebPage = false;
 
-        if(domain.equals("i.imgur.com") || domain.equals("imgur.com"))
+        if(domain != null && (domain.equals("i.imgur.com") || domain.equals("imgur.com")))
             url = url + ".png";
 
         if(url.endsWith(".jpg") || url.endsWith(".png"))
