@@ -14,23 +14,31 @@ import org.redplatoon.reddified.app.R;
  */
 public class MixPanelService implements Service {
 
-    private String apiKey;
+    private static String apiKey;
     private Context context;
-    private MixpanelAPI mixpanelAPI;
+
+    /**
+     * Factory method to create an instance of MixpanelAPI.
+     * @param context
+     * @return MixpanelAPI mixpanelAPI
+     */
+    public static MixpanelAPI createMixpanelAPIInstance(Context context) {
+        MixPanelService mixpanelService = new MixPanelService(context);
+        MixpanelAPI mixpanelAPI = MixpanelAPI.getInstance(context, apiKey);
+        mixpanelService.initializeSuperProperties(mixpanelAPI);
+        return mixpanelAPI;
+    }
 
     public MixPanelService(Context context) {
-
         this.context = context;
         this.apiKey = context.getString(R.string.mixpanel_token);
-        this.mixpanelAPI = MixpanelAPI.getInstance(context, apiKey);
-        initializeSuperProperties();
     }
 
     /**
      * Sets super properties for mixpanel tags based on app flavor (debug or release)
      * and user type (paid or free)
      */
-    public void initializeSuperProperties() {
+    public void initializeSuperProperties(MixpanelAPI mixpanelAPI) {
         try {
             if (context.getPackageName().endsWith(".debug")) {
                 JSONObject props = new JSONObject();
@@ -42,13 +50,5 @@ public class MixPanelService implements Service {
         }  catch(JSONException e) {
             Log.d("MixpanelSuperPropError", e.getMessage());
         }
-    }
-
-    /**
-     * Get MixpanelAPI instance
-     * @return MixpanelAPI mixpanelAPI
-     */
-    public MixpanelAPI getMixpanelAPI() {
-        return mixpanelAPI;
     }
 }

@@ -21,6 +21,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
 import org.redplatoon.reddified.app.models.Post;
 import org.redplatoon.reddified.app.services.MediaService;
 import org.redplatoon.reddified.app.services.MixPanelService;
@@ -40,7 +42,7 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
     private Fragment mItemFragment;
     public static String[] DRAWER_CONTENTS;
     private ActionBar.TabListener mTabListener;
-    private MixPanelService mMixPanelService;
+    private MixpanelAPI mMixPanelAPI;
     private static final int TABS_COUNT = 5;
 
     @Override
@@ -52,10 +54,11 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
 
         MediaService.setGlobalIonSettings(this);
         mSettings = getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
+        mMixPanelAPI = MixPanelService.createMixpanelAPIInstance(this);
 
         //FragmentManager fragmentManager = getFragmentManager();
         //final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        mMixPanelService = new MixPanelService(this);
+
 
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
