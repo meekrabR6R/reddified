@@ -107,6 +107,34 @@ public class MixPanelService implements Service {
             }
         }
 
+        /**
+         * Track 'Sign In'
+         */
+        public void trackSignIn() {
+            try {
+                JSONObject props = new JSONObject();
+                //TODO: sign in properties
+                props.put("", "");
+                track("Sign In", props);
+            } catch(JSONException e) {
+                Log.d("ReddifiedMixPanelTracker", e.getMessage());
+            }
+        }
+
+        /**
+         * Track 'Sign Out'
+         */
+        public void trackSignOut() {
+            try {
+                JSONObject props = new JSONObject();
+                //TODO: sign out properties
+                props.put("", "");
+                track("Sign Out", props);
+            } catch(JSONException e) {
+                Log.d("ReddifiedMixPanelTracker", e.getMessage());
+            }
+        }
+
         public void setLaunchStateToResume() {
             isFromPausedState = true;
         }
