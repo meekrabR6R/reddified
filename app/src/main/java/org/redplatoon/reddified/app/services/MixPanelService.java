@@ -19,11 +19,11 @@ public class MixPanelService implements Service {
      * @param context
      * @return MixpanelAPI mixpanelAPI
      */
-    public static MixpanelAPI createMixpanelAPIInstance(Context context) {
+    public static ReddifiedMixpanelAPI createReddifiedMixpanelAPIInstance(Context context) {
         String apiKey = context.getString(R.string.mixpanel_token);
-        MixpanelAPI mixpanelAPI = MixpanelAPI.getInstance(context, apiKey);
-        initializeSuperProperties(context, mixpanelAPI);
-        return mixpanelAPI;
+        ReddifiedMixpanelAPI reddifiedMixpanelAPI = new ReddifiedMixpanelAPI(context, apiKey);
+        initializeSuperProperties(context, reddifiedMixpanelAPI.getMixpanelAPIInstance());
+        return reddifiedMixpanelAPI;
     }
 
     /**
@@ -51,6 +51,48 @@ public class MixPanelService implements Service {
             Log.d("MixpanelSuperProps", "Super properties registered");
         }  catch(JSONException e) {
             Log.d("MixpanelSuperPropError", e.getMessage());
+        }
+    }
+
+    /**
+     * Reddified MixpanelAPI wrapper class
+     */
+    public static class ReddifiedMixpanelAPI {
+        private MixpanelAPI mixpanelAPI;
+        private boolean isFromPausedState;
+
+        public ReddifiedMixpanelAPI(Context context, String apiKey) {
+            mixpanelAPI = MixpanelAPI.getInstance(context, apiKey);
+            isFromPausedState = false;
+        }
+
+        public void trackAppOpen() {
+
+            String openType;
+            if(isFromPausedState)
+                openType = "Resumed";
+            else
+                openType = "Launched";
+
+            try {
+                JSONObject props = new JSONObject();
+                props.put("Open Type", openType);
+                mixpanelAPI.track("App Opened", props);
+                Log.d("ReddifiedMixpanelTracker", "Open action tracked: " + openType);
+            } catch(JSONException e) {
+                Log.d("ReddifiedMixPanelTracker", e.getMessage());
+            }
+        }
+
+        public void setLaunchStateToResume() {
+            isFromPausedState = true;
+        }
+        public boolean isFromPausedState() {
+            return isFromPausedState;
+        }
+
+        public MixpanelAPI getMixpanelAPIInstance() {
+            return mixpanelAPI;
         }
     }
 }

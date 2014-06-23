@@ -21,8 +21,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.mixpanel.android.mpmetrics.MixpanelAPI;
-
 import org.redplatoon.reddified.app.models.Post;
 import org.redplatoon.reddified.app.services.MediaService;
 import org.redplatoon.reddified.app.services.MixPanelService;
@@ -42,7 +40,7 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
     private Fragment mItemFragment;
     public static String[] DRAWER_CONTENTS;
     private ActionBar.TabListener mTabListener;
-    private MixpanelAPI mMixpanel;
+    private MixPanelService.ReddifiedMixpanelAPI mReddifiedMixpanel;
     private static final int TABS_COUNT = 5;
 
     @Override
@@ -54,7 +52,7 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
 
         MediaService.setGlobalIonSettings(this);
         mSettings = getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
-        mMixpanel = MixPanelService.createMixpanelAPIInstance(this);
+        mReddifiedMixpanel = MixPanelService.createReddifiedMixpanelAPIInstance(this);
 
         //FragmentManager fragmentManager = getFragmentManager();
         //final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -217,6 +215,19 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
     }
 
     @Override
+    protected void onResume() {
+        if(!mReddifiedMixpanel.isFromPausedState());
+           mReddifiedMixpanel.trackAppOpen();
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        mReddifiedMixpanel.setLaunchStateToResume();
+        super.onPause();
+    }
+
+    @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
@@ -241,7 +252,7 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
 
     @Override
     protected void onDestroy() {
-        mMixpanel.flush();
+        mReddifiedMixpanel.getMixpanelAPIInstance().flush();
         super.onDestroy();
     }
 
