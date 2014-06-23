@@ -55,9 +55,7 @@ public class PostsAdapter extends ArrayAdapter<Post> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        System.out.println("MAFTER: " + mAfter);
         if ((position + 5 == mPosts.size())) {//&& !mAfter.equals("END"))
-            System.out.println("MSUPERAFTER: " + mAfter);
             mPostUpdater.updatePosts(mAfter);
         }
 

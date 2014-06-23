@@ -16,7 +16,39 @@ android {
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
+        debug {
+            packageNameSuffix ".debug"
+        }
     }
+
+    productFlavors {
+        paid {
+            packageName "org.redplatoon.reddified.app.paid"
+        }
+        free {
+            packageName "org.redplatoon.reddified.app.free"
+        }
+    }
+
+    android.sourceSets.paid {
+        manifest.srcFile 'versions/paid/AndroidManifest.xml'
+        res { srcDir 'versions/paid/res' }
+        resources { srcDir 'versions/paid/res' }
+    }
+
+    android.sourceSets.free {
+        manifest.srcFile 'versions/free/AndroidManifest.xml'
+        res { srcDir 'versions/free/res' }
+        resources { srcDir 'versions/free/res' }
+    }
+
+    android.sourceSets.release {
+        res { srcDirs 'variations/release' }
+    }
+    android.sourceSets.debug {
+        res { srcDirs 'variations/debug' }
+    }
+
     sourceSets {
         instrumentTest {
             java.srcDirs = ['androidTest/java']
@@ -34,3 +66,4 @@ dependencies {
     androidTestCompile files('libs/espresso-contrib-1.1-bundled.jar')
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
+

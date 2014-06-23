@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
+import org.redplatoon.reddified.app.R;
+
 /**
  * Created by nmiano on 6/22/14 5:19 PM for Reddified
  */
@@ -13,10 +15,11 @@ public class MixPanelService implements Service {
     private Context context;
     private MixpanelAPI mixpanelAPI;
 
-    public MixPanelService(Context context, String apiKey) {
-        this.apiKey = apiKey;
+    public MixPanelService(Context context) {
+
         this.context = context;
-        mixpanelAPI = MixpanelAPI.getInstance(context, apiKey);
+        this.apiKey = context.getString(R.string.mixpanel_token);
+        this.mixpanelAPI = MixpanelAPI.getInstance(context, apiKey);
     }
 
     public MixpanelAPI getMixpanelAPI() {

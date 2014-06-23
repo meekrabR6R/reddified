@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.koushikdutta.ion.Ion;
 
 import org.redplatoon.reddified.app.models.Post;
+import org.redplatoon.reddified.app.services.MixPanelService;
 
 public class MainActivity extends Activity implements PostFragment.OnFragmentInteractionListener, ItemFragment.OnFragmentInteractionListener {
 
@@ -41,6 +42,7 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
     private Fragment mItemFragment;
     public static String[] DRAWER_CONTENTS;
     private ActionBar.TabListener mTabListener;
+    private MixPanelService mMixPanelService;
     private static final int TABS_COUNT = 5;
 
     @Override
@@ -49,11 +51,13 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
         setContentView(R.layout.main);
+
         Ion.getDefault(this).configure().setLogging("Reddified", Log.DEBUG);
         mSettings = getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
 
         //FragmentManager fragmentManager = getFragmentManager();
         //final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        mMixPanelService = new MixPanelService(this);
 
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
