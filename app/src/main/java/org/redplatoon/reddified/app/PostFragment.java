@@ -170,6 +170,7 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
      */
     public interface OnFragmentInteractionListener {
         public void onPostFragmentInteraction(Post post);
+        public void onTrackablePostInteraction(String trackedInteraction);
     }
 
 }

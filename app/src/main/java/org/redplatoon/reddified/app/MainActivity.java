@@ -185,6 +185,11 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
     }
 
     @Override
+    public void onTrackablePostInteraction(String trackedInteraction) {
+        //TODO: handle tracked actions
+    }
+
+    @Override
     public void onItemFragmentInteraction() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.remove(mItemFragment);
