@@ -30,7 +30,7 @@ public class MediaService implements Service {
         return gifs;
     }
 
-    public static void setGlobalIonDebugger(Context context) {
+    public static void setGlobalIonSettings(Context context) {
         if (context.getPackageName().endsWith(".debug")) {
             Ion.getDefault(context).configure().setLogging("Reddified", Log.DEBUG);
         } else {

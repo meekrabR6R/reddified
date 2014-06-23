@@ -50,7 +50,7 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
 
         setContentView(R.layout.main);
 
-        MediaService.setGlobalIonDebugger(this);
+        MediaService.setGlobalIonSettings(this);
         mSettings = getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
 
         //FragmentManager fragmentManager = getFragmentManager();
