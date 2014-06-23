@@ -42,7 +42,7 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
     private Fragment mItemFragment;
     public static String[] DRAWER_CONTENTS;
     private ActionBar.TabListener mTabListener;
-    private MixpanelAPI mMixPanelAPI;
+    private MixpanelAPI mMixpanel;
     private static final int TABS_COUNT = 5;
 
     @Override
@@ -54,7 +54,7 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
 
         MediaService.setGlobalIonSettings(this);
         mSettings = getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
-        mMixPanelAPI = MixPanelService.createMixpanelAPIInstance(this);
+        mMixpanel = MixPanelService.createMixpanelAPIInstance(this);
 
         //FragmentManager fragmentManager = getFragmentManager();
         //final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -237,6 +237,12 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
             mDrawerToggle.setDrawerIndicatorEnabled(true);
         }
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mMixpanel.flush();
+        super.onDestroy();
     }
 
     private void addTabsToActionBar(ActionBar actionBar) {

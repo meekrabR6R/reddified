@@ -14,39 +14,41 @@ import org.redplatoon.reddified.app.R;
  */
 public class MixPanelService implements Service {
 
-    private static String apiKey;
-    private Context context;
-
     /**
      * Factory method to create an instance of MixpanelAPI.
      * @param context
      * @return MixpanelAPI mixpanelAPI
      */
     public static MixpanelAPI createMixpanelAPIInstance(Context context) {
-        MixPanelService mixpanelService = new MixPanelService(context);
+        String apiKey = context.getString(R.string.mixpanel_token);
         MixpanelAPI mixpanelAPI = MixpanelAPI.getInstance(context, apiKey);
-        mixpanelService.initializeSuperProperties(mixpanelAPI);
+        initializeSuperProperties(context, mixpanelAPI);
         return mixpanelAPI;
-    }
-
-    public MixPanelService(Context context) {
-        this.context = context;
-        this.apiKey = context.getString(R.string.mixpanel_token);
     }
 
     /**
      * Sets super properties for mixpanel tags based on app flavor (debug or release)
      * and user type (paid or free)
      */
-    public void initializeSuperProperties(MixpanelAPI mixpanelAPI) {
+    public static void initializeSuperProperties(Context context, MixpanelAPI mixpanelAPI) {
+        String packageName = context.getPackageName();
+        JSONObject props = new JSONObject();
+
         try {
-            if (context.getPackageName().endsWith(".debug")) {
-                JSONObject props = new JSONObject();
+            if (packageName.contains(".free")) {
+                props.put("App Version", "Free");
+            }
+            if (packageName.contains(".paid")) {
+                props.put("App Version", "Paid");
+            }
+            if (packageName.endsWith(".debug")) {
                 props.put("App Flavor", "Debug");
-                mixpanelAPI.registerSuperProperties(props);
-            } //else {
-                //TODO: release version mixpanel settings
-            //}
+            }
+            if (packageName.endsWith(".release")) {
+                props.put("App Flavor", "Release");
+            }
+            mixpanelAPI.registerSuperProperties(props);
+            Log.d("MixpanelSuperProps", "Super properties registered");
         }  catch(JSONException e) {
             Log.d("MixpanelSuperPropError", e.getMessage());
         }
