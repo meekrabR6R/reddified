@@ -61,16 +61,16 @@ public class MixPanelService implements Service {
     public static class ReddifiedMixpanelAPI {
         private MixpanelAPI mixpanelAPI;
         private boolean isFromPausedState;
-        private boolean logging;
+        private boolean isTracking;
 
         public ReddifiedMixpanelAPI(Context context, String apiKey) {
             mixpanelAPI = MixpanelAPI.getInstance(context, apiKey);
             isFromPausedState = false;
 
             if (context.getPackageName().endsWith(".debug"))
-                setLogging(false);
+                setTracking(false);
             else
-                setLogging(true);
+                setTracking(true);
         }
 
         /**
@@ -117,10 +117,14 @@ public class MixPanelService implements Service {
 
         /**
          * For use in .debug builds (for testing, etc.)
-         * @param logging
+         * @param isTracking
          */
-        public void setLogging(boolean logging) {
-            this.logging = logging;
+        public void setTracking(boolean isTracking) {
+            this.isTracking = isTracking;
+        }
+
+        public boolean isTracking() {
+            return isTracking;
         }
 
         public MixpanelAPI getMixpanelAPIInstance() {
@@ -133,9 +137,9 @@ public class MixPanelService implements Service {
          * @param props
          */
         private void track(String key, JSONObject props) {
-            if (logging) {
+            if (isTracking) {
                 mixpanelAPI.track(key, props);
-                Log.d("ReddifiedMixpanelTracker", "Open action tracked: " + key);
+                Log.d("ReddifiedMixpanelTracker", "Action tracked: " + key);
             } else
                 Log.d("ReddifiedMixpanelTracker", "Tracking disabled: " + key);
         }

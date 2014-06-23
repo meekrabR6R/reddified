@@ -54,6 +54,8 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
         mSettings = getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
         mReddifiedMixpanel = MixPanelService.createReddifiedMixpanelAPIInstance(this);
 
+        //mReddifiedMixpanel.setTracking(true); //uncomment to enable for .debug testing ~NM 06/23/14
+
         //FragmentManager fragmentManager = getFragmentManager();
         //final FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
