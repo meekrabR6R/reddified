@@ -58,7 +58,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/androidTestFree/jni" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/androidTestFree/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/debug/res" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/variations/testing" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/variations/debug" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/debug/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/debug/aidl" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/debug/assets" isTestSource="false" />

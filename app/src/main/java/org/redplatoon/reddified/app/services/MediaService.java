@@ -1,7 +1,9 @@
 package org.redplatoon.reddified.app.services;
 
 import android.app.Activity;
+import android.content.Context;
 import android.media.Image;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.koushikdutta.async.future.FutureCallback;
@@ -26,6 +28,12 @@ public class MediaService implements Service {
 
     public ArrayList<Gif> getGifs() {
         return gifs;
+    }
+
+    public static void setGlobalIonDebugger(Context context) {
+        if (context.getPackageName().endsWith(".debug")) {
+            Ion.getDefault(context).configure().setLogging("Reddified", Log.DEBUG);
+        }
     }
 
     public void loadImage(ImageView imageView, String url) {

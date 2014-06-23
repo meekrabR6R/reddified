@@ -35,7 +35,6 @@ android {
         res { srcDir 'versions/paid/res' }
         resources { srcDir 'versions/paid/res' }
     }
-
     android.sourceSets.free {
         manifest.srcFile 'versions/free/AndroidManifest.xml'
         res { srcDir 'versions/free/res' }

@@ -22,6 +22,15 @@ public class MixPanelService implements Service {
         this.mixpanelAPI = MixpanelAPI.getInstance(context, apiKey);
     }
 
+    public void initializeSuperProperties() {
+        if (context.getPackageName().endsWith(".debug")) {
+
+            //Ion.getDefault(this).configure().setLogging("axial-ion", Log.DEBUG);
+        } else {
+
+        }
+    }
+
     public MixpanelAPI getMixpanelAPI() {
         return mixpanelAPI;
     }
