@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
@@ -36,6 +37,7 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
     private String mUserAgent;
     private String mModHash;
     private String mCookie;
+    private Button mCommentsButton;
     private RedditService mRedditService;
     private final ArrayList<Post> mPosts = new ArrayList<Post>();
 
@@ -75,8 +77,8 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
         //mSettings = getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
         setListAdapter(new PostsAdapter(this, getActivity()));
         mPostsAdapter = (PostsAdapter) getListAdapter();
-    }
 
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -94,7 +96,6 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
         super.onDetach();
         mListener = null;
     }
-
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
@@ -172,6 +173,7 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
     public interface OnFragmentInteractionListener {
         public void onPostFragmentInteraction(Post post);
         public void onTrackablePostInteraction(String trackedInteraction, Post post);
+        public void onCommentsButtonClick(String commentsLink);
     }
 
 }

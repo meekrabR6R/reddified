@@ -24,6 +24,7 @@ public class PostsAdapter extends ArrayAdapter<Post> {
     private final Context mContext;
     private ArrayList<Post> mPosts = new ArrayList<Post>();
     private PostUpdater mPostUpdater;
+    private PostFragment.OnFragmentInteractionListener mListener;
     private int mCount;
     private String mAfter;
 
@@ -34,6 +35,7 @@ public class PostsAdapter extends ArrayAdapter<Post> {
     public PostsAdapter(PostUpdater postUpdater, Context context) {
         super(context, R.layout.fragment_post);
         mContext = context;
+        mListener = (PostFragment.OnFragmentInteractionListener) mContext;
         mLayoutInflater = LayoutInflater.from(mContext);
         mMediaService = new MediaService();
         mPostUpdater = postUpdater;
@@ -89,11 +91,22 @@ public class PostsAdapter extends ArrayAdapter<Post> {
         holder.comments = (Button) convertView.findViewById(R.id.comments);
         holder.comments.setText(String.format(mContext.getString(R.string.comments), currPost.numComments));
 
+        final String commentsLink = currPost.getPermalink();
+
         holder.thumb = (ImageView) convertView.findViewById(R.id.thumb);
 
         mMediaService.loadImage(holder.thumb, currPost.getThumbnail());
 
         convertView.setTag(holder);
+
+        holder.comments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (null != mListener) {
+                    mListener.onCommentsButtonClick(commentsLink);
+                }
+            }
+        });
 
         return convertView;
     }

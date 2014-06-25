@@ -25,7 +25,9 @@ import org.redplatoon.reddified.app.models.Post;
 import org.redplatoon.reddified.app.services.MediaService;
 import org.redplatoon.reddified.app.services.MixPanelService;
 
-public class MainActivity extends Activity implements PostFragment.OnFragmentInteractionListener, ItemFragment.OnFragmentInteractionListener {
+public class MainActivity extends Activity implements PostFragment.OnFragmentInteractionListener,
+                                                      ItemFragment.OnFragmentInteractionListener,
+                                                      CommentsFragment.OnFragmentInteractionListener {
 
     public static final String USER_CREDS = "ReddifiedUser";
     private SharedPreferences mSettings;
@@ -38,6 +40,7 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
     private CharSequence mTitle;
     private String[] mDrawerItems;
     private Fragment mItemFragment;
+    private Fragment mCommentsFragment;
     public static String[] DRAWER_CONTENTS;
     private ActionBar.TabListener mTabListener;
     private MixPanelService.ReddifiedMixpanelAPI mReddifiedMixpanel;
@@ -198,6 +201,29 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
         transaction.remove(mItemFragment);
         mViewPager.setVisibility(View.VISIBLE);
         addTabsToActionBar(getActionBar());
+    }
+
+    @Override
+    public void onCommentsButtonClick(String commentsLink) {
+        mDrawerToggle.setDrawerIndicatorEnabled(false);
+        // Create new fragment and transaction
+        mCommentsFragment = CommentsFragment.newInstance(commentsLink);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack
+        mViewPager.setVisibility(View.GONE);
+        getActionBar().removeAllTabs();
+        transaction.replace(R.id.item_container, mCommentsFragment);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
+    }
+
+    @Override
+    public void onCommentsFragmentInteraction() {
+        //TODO: stuff
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {

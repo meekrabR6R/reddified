@@ -14,10 +14,12 @@ import org.redplatoon.reddified.app.libs.ReddifiedFragment;
 public class CommentsFragment extends ReddifiedFragment {
 
     private OnFragmentInteractionListener mListener;
+    private String mCommentsLink;
 
-    public static CommentsFragment newInstance() {
+    public static CommentsFragment newInstance(String commentsLink) {
         CommentsFragment fragment = new CommentsFragment();
         Bundle args = new Bundle();
+        args.putString("commentsLink", commentsLink);
         fragment.setArguments(args);
         return fragment;
     }
@@ -33,6 +35,7 @@ public class CommentsFragment extends ReddifiedFragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
+            mCommentsLink = getArguments().getString("commentsLink");
         }
 
         setListAdapter(new CommentsAdapter(getActivity()));
@@ -64,7 +67,7 @@ public class CommentsFragment extends ReddifiedFragment {
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(position);
+            mListener.onCommentsFragmentInteraction();
         }
     }
 
@@ -80,7 +83,7 @@ public class CommentsFragment extends ReddifiedFragment {
     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(int position);
+        public void onCommentsFragmentInteraction();
     }
 
 }
