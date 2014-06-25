@@ -17,7 +17,7 @@
     <string name="password_req">Password cannot be blank.</string>
     <string name="greeting">Hello</string>
     <string name="farewell">See ya</string>
-    <string name="comments">comments: %s</string>
+    <string name="comments">%s comments</string>
 
     <string-array name="signed_out_drawer_menu">
         <item>Sign In</item>

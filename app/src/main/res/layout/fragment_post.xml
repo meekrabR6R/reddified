@@ -109,7 +109,7 @@
         android:textColor="#c0c0c0"
         android:textSize="12sp" />
 
-    <TextView
+    <Button
         android:id="@+id/comments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -117,5 +117,6 @@
         android:layout_below="@id/subreddit"
         android:layout_toRightOf="@id/thumb"
         android:layout_marginLeft="10dp"
+        android:focusable="false"
         android:textSize="12sp" />
 </RelativeLayout>

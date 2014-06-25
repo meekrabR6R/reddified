@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -85,8 +86,9 @@ public class PostsAdapter extends ArrayAdapter<Post> {
         holder.score = (TextView) convertView.findViewById(R.id.score);
         holder.score.setText(String.valueOf(currPost.score));
 
-        holder.comments = (TextView) convertView.findViewById(R.id.comments);
+        holder.comments = (Button) convertView.findViewById(R.id.comments);
         holder.comments.setText(String.format(mContext.getString(R.string.comments), currPost.numComments));
+
         holder.thumb = (ImageView) convertView.findViewById(R.id.thumb);
 
         mMediaService.loadImage(holder.thumb, currPost.getThumbnail());
@@ -110,7 +112,7 @@ public class PostsAdapter extends ArrayAdapter<Post> {
         TextView  subreddit;
         TextView  score;
         TextView  index;
-        TextView  comments;
+        Button    comments;
         ImageView thumb;
     }
 }
