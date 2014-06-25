@@ -223,7 +223,10 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
 
     @Override
     public void onCommentsFragmentInteraction() {
-        //TODO: stuff
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.remove(mCommentsFragment);
+        mViewPager.setVisibility(View.VISIBLE);
+        addTabsToActionBar(getActionBar());
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -279,6 +282,9 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
     public void onBackPressed() {
         if(mItemFragment != null) {
             onItemFragmentInteraction();
+            mDrawerToggle.setDrawerIndicatorEnabled(true);
+        } else if(mCommentsFragment != null) {
+            onCommentsFragmentInteraction();
             mDrawerToggle.setDrawerIndicatorEnabled(true);
         }
         super.onBackPressed();
