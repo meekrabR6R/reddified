@@ -18,16 +18,19 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
 
     private LayoutInflater mLayoutInflater;
     private MediaService mMediaService;
+    private CommentsUpdater mCommentsUpdater;
     private final Context mContext;
     private ArrayList<Comment> mComments = new ArrayList<Comment>();
 
-    public interface  PostUpdater {
-        public void updatePosts(String after);
+    public interface  CommentsUpdater {
+        public void updateComments();
     }
 
-    public CommentsAdapter(Context context) {
+    public CommentsAdapter(CommentsUpdater commentsUpdater, Context context) {
         super(context, R.layout.fragment_comment);
         mContext = context;
+        mCommentsUpdater = commentsUpdater;
+        mCommentsUpdater.updateComments();
     }
 
     @Override

@@ -140,10 +140,11 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
         }
     }
 
+    @Override
     public void updatePosts(String after) {
         final Activity activity = getActivity();
         activity.setProgressBarIndeterminateVisibility(true);
-        mRedditService.loadPosts(after, getActivity(), this, mFilter);
+        mRedditService.loadPosts(after, activity, this, mFilter);
     }
 
     /**

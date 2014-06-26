@@ -5,13 +5,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
+import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.FutureCallback;
+
 import org.redplatoon.reddified.app.libs.ReddifiedFragment;
 
 /**
  * Comments
  * created by nmiano on 06/24/2014
  */
-public class CommentsFragment extends ReddifiedFragment {
+public class CommentsFragment extends ReddifiedFragment implements CommentsAdapter.CommentsUpdater,
+                                                                   FutureCallback<JsonObject> {
 
     private OnFragmentInteractionListener mListener;
     private String mCommentsLink;
@@ -38,7 +42,7 @@ public class CommentsFragment extends ReddifiedFragment {
             mCommentsLink = getArguments().getString("commentsLink");
         }
 
-        setListAdapter(new CommentsAdapter(getActivity()));
+        setListAdapter(new CommentsAdapter(this, getActivity()));
     }
 
 
@@ -72,15 +76,23 @@ public class CommentsFragment extends ReddifiedFragment {
     }
 
     /**
-    * This interface must be implemented by activities that contain this
-    * fragment to allow an interaction in this fragment to be communicated
-    * to the activity and potentially other fragments contained in that
-    * activity.
-    * <p>
-    * See the Android Training lesson <a href=
-    * "http://developer.android.com/training/basics/fragments/communicating.html"
-    * >Communicating with Other Fragments</a> for more information.
-    */
+     * FutureCallback<T> callback method
+     * @param e
+     * @param result
+     */
+    @Override
+    public void onCompleted(Exception e, JsonObject result) {
+        getActivity().setProgressBarIndeterminateVisibility(false);
+        mPullToRefreshLayout.setRefreshComplete(); //look into appropriate naming ~NM 06/12 01:20
+    }
+
+    @Override
+    public void updateComments() {
+        final Activity activity = getActivity();
+        activity.setProgressBarIndeterminateVisibility(true);
+        mRedditService.loadComments(mCommentsLink, activity, this);
+    }
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onCommentsFragmentInteraction();
