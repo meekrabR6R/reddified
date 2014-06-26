@@ -1,8 +1,6 @@
 package org.redplatoon.reddified.app;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,7 +15,6 @@ import com.koushikdutta.async.future.FutureCallback;
 
 import org.redplatoon.reddified.app.libs.ReddifiedFragment;
 import org.redplatoon.reddified.app.models.Post;
-import org.redplatoon.reddified.app.services.RedditService;
 
 import java.util.ArrayList;
 
@@ -31,15 +28,10 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
     public static final String USER_CREDS = "ReddifiedUser";
     private PostsAdapter mPostsAdapter;
     private String mCount = String.valueOf(0);
-    private String mUrl;
     private String mFilter;
-    private SharedPreferences mSettings;
     private OnFragmentInteractionListener mListener;
-    private String mUserAgent;
-    private String mModHash;
-    private String mCookie;
     private Button mCommentsButton;
-    private RedditService mRedditService;
+
     private final ArrayList<Post> mPosts = new ArrayList<Post>();
 
     public static PostFragment newInstance(String filter) {
@@ -59,26 +51,15 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSettings = getActivity().getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
-        mUserAgent = getString(R.string.user_agent);
 
-        if(mSettings.contains("modHash"))
-            mModHash = mSettings.getString("modHash", "");
-
-        if(mSettings.contains("cookie"))
-            mCookie = mSettings.getString("cookie", "");
         if (getArguments() != null) {
             mFilter = getArguments().getString("filter");
         } else {
             mFilter = "";
         }
-        mUrl = String.format(getString(R.string.reddit_url))+mFilter+".json";
 
-        mRedditService = new RedditService(mUserAgent, mModHash, mCookie);
-        //mSettings = getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
         setListAdapter(new PostsAdapter(this, getActivity()));
         mPostsAdapter = (PostsAdapter) getListAdapter();
-
     }
 
     @Override

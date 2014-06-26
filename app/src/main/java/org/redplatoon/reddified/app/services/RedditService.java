@@ -16,7 +16,6 @@ public class RedditService implements Service {
 
     private String userAgent;
     private String modHash;
-    private String url;
     private String cookie;
 
     public RedditService(String userAgent, String modHash, String cookie) {
@@ -62,7 +61,4 @@ public class RedditService implements Service {
                 .setCallback(futureCallback);
     }
 
-    public String getUrl() {
-        return url;
-    }
 }
