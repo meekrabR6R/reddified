@@ -25,7 +25,8 @@ import java.util.ArrayList;
  * List of posts
  * created by nmiano
  */
-public class PostFragment extends ReddifiedFragment implements PostsAdapter.PostUpdater {
+public class PostFragment extends ReddifiedFragment implements PostsAdapter.PostUpdater,
+                                                               FutureCallback<JsonObject> {
 
     public static final String USER_CREDS = "ReddifiedUser";
     private PostsAdapter mPostsAdapter;
@@ -73,7 +74,7 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
         }
         mUrl = String.format(getString(R.string.reddit_url))+mFilter+".json";
 
-        mRedditService = new RedditService(mUserAgent, mModHash, mUrl, mCookie);
+        mRedditService = new RedditService(mUserAgent, mModHash, mCookie);
         //mSettings = getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
         setListAdapter(new PostsAdapter(this, getActivity()));
         mPostsAdapter = (PostsAdapter) getListAdapter();
@@ -116,48 +117,52 @@ public class PostFragment extends ReddifiedFragment implements PostsAdapter.Post
         super.onRefreshStarted(view);
     }
 
-    public void updatePosts(String after) {
+    /**
+     * FutureCallback<T> callback method
+     * @param e
+     * @param result
+     */
+    @Override
+    public void onCompleted(Exception e, JsonObject result) {
+        getActivity().setProgressBarIndeterminateVisibility(false);
+        //progress.setVisibility(8);
+        if(e != null) {
+            Log.d("HTTPERR", e.toString());
+        } else {
+            JsonArray children = result
+                    .get("data")
+                    .getAsJsonObject()
+                    .get("children")
+                    .getAsJsonArray();
 
+            for (JsonElement child : children) {
+                Gson gson = new Gson();
+                Post post = gson.fromJson(child.getAsJsonObject().get("data"), Post.class);
+                post.setThumbnail(child.getAsJsonObject().get("data").getAsJsonObject().get("thumbnail").getAsString());
+                post.setTypeFlag(); //totally kludgy way to handle this.. but GSON makes it weird, so.. ~NM 06/14/2014
+                mPosts.add(post);
+            }
+
+            JsonElement after = result.getAsJsonObject().get("data").getAsJsonObject().get("after");
+
+            //String newAfter = "END";
+
+            if (after != null) {
+                int tempCount = Integer.parseInt(mCount);
+                tempCount += mPosts.size();
+
+                mPostsAdapter.update(mPosts, tempCount, after.getAsString());//newAfter);
+                //newAfter = result.getAsJsonObject().get("data").getAsJsonObject().get("after").getAsString();
+            }
+
+            mPullToRefreshLayout.setRefreshComplete(); //look into appropriate naming ~NM 06/12 01:20
+        }
+    }
+
+    public void updatePosts(String after) {
         final Activity activity = getActivity();
         activity.setProgressBarIndeterminateVisibility(true);
-        mRedditService.loadPosts(after, getActivity(), new FutureCallback<JsonObject>() {
-            @Override
-            public void onCompleted(Exception e, JsonObject result) {
-                activity.setProgressBarIndeterminateVisibility(false);
-                //progress.setVisibility(8);
-                if(e != null) {
-                    Log.d("HTTPERR", e.toString());
-                } else {
-                    JsonArray children = result
-                            .get("data")
-                            .getAsJsonObject()
-                            .get("children")
-                            .getAsJsonArray();
-
-                    for (JsonElement child : children) {
-                        Gson gson = new Gson();
-                        Post post = gson.fromJson(child.getAsJsonObject().get("data"), Post.class);
-                        post.setThumbnail(child.getAsJsonObject().get("data").getAsJsonObject().get("thumbnail").getAsString());
-                        post.setTypeFlag(); //totally kludgy way to handle this.. but GSON makes it weird, so.. ~NM 06/14/2014
-                        mPosts.add(post);
-                    }
-
-                    JsonElement after = result.getAsJsonObject().get("data").getAsJsonObject().get("after");
-
-                    //String newAfter = "END";
-
-                    if (after != null) {
-                        int tempCount = Integer.parseInt(mCount);
-                        tempCount += mPosts.size();
-
-                        mPostsAdapter.update(mPosts, tempCount, after.getAsString());//newAfter);
-                        //newAfter = result.getAsJsonObject().get("data").getAsJsonObject().get("after").getAsString();
-                    }
-
-                    mPullToRefreshLayout.setRefreshComplete(); //look into appropriate naming ~NM 06/12 01:20
-                }
-            }
-        });
+        mRedditService.loadPosts(after, getActivity(), this, mFilter);
     }
 
     /**

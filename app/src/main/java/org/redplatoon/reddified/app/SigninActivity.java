@@ -33,7 +33,7 @@ public class SigninActivity extends Activity {
 
         mSettings = getSharedPreferences(USER_CREDS, Context.MODE_PRIVATE);
         mUserAgent = getString(R.string.user_agent);
-        mReddit = new RedditService(mUserAgent, null, getString(R.string.reddit_url)+"/api/login", null);
+        mReddit = new RedditService(mUserAgent, null, null);
 
         final Button mSignin = (Button) findViewById(R.id.sign_in);
         final EditText mUser = (EditText)findViewById(R.id.username);

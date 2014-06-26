@@ -29,4 +29,11 @@ public class Comment {
 
     private ArrayList<Comment> children = new ArrayList<Comment>();
 
+    public void setChildren(ArrayList<Comment> chillens) {
+        this.children = chillens;
+    }
+
+    public ArrayList<Comment> getChildren() {
+        return children;
+    }
 }

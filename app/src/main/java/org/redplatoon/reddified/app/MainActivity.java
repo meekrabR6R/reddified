@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -43,6 +44,9 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
     private Fragment mCommentsFragment;
     public static String[] DRAWER_CONTENTS;
     private ActionBar.TabListener mTabListener;
+    private ActionBar.Tab mCurrTab;
+    private int mCurrViewPagerItem;
+    private Parcelable mPostsListsState;
     private MixPanelService.ReddifiedMixpanelAPI mReddifiedMixpanel;
     private static final int TABS_COUNT = 5;
 
@@ -108,6 +112,7 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
         mPostFragmentPagerAdapter = new PostFragmentStatePagerAdapter(getFragmentManager());
 
         mViewPager = (ViewPager)findViewById(R.id.pager);
+        mViewPager.setOffscreenPageLimit(TABS_COUNT);
         mViewPager.setAdapter(mPostFragmentPagerAdapter);
 
         // Specify that tabs should be displayed in the action bar.
@@ -180,6 +185,10 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
 
         // Replace whatever is in the fragment_container view with this fragment,
         // and add the transaction to the back stack
+        mCurrViewPagerItem = mViewPager.getCurrentItem();
+        //mCurrTab = getActionBar().getSelectedTab();
+        mPostsListsState = mPostFragmentPagerAdapter.saveState();
+
         mViewPager.setVisibility(View.GONE);
         getActionBar().removeAllTabs();
         transaction.replace(R.id.item_container, mItemFragment);
@@ -201,6 +210,13 @@ public class MainActivity extends Activity implements PostFragment.OnFragmentInt
         transaction.remove(mItemFragment);
         mViewPager.setVisibility(View.VISIBLE);
         addTabsToActionBar(getActionBar());
+
+        //try {
+        //    getActionBar().selectTab(mCurrTab);
+        //    mPostFragmentPagerAdapter.restoreState(mPostsListsState, getClassLoader());
+        //} catch(NullPointerException e) {
+        //    Log.d("Restore tab position", e.getMessage());
+       // }
     }
 
     @Override
