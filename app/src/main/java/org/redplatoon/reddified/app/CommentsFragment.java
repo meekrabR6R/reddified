@@ -94,15 +94,10 @@ public class CommentsFragment extends ReddifiedFragment implements CommentsAdapt
             Log.d("HTTPERR", e.toString());
         } else {
             JsonObject comments = result.get(1).getAsJsonObject();
-                                     //.get("data")
-                                     //.getAsJsonObject();
-                                     //.get("children").getAsJsonArray();
-
-            System.out.println("POO: " + comments.get("kind"));
             ArrayList<Comment> res = CommentsFactory.newCommentsList(comments);
             mComments.addAll(res);
-
-            //JsonElement after = result.getAsJsonObject().get("data").getAsJsonObject().get("after");
+           
+            //TODO: rest of comment stuff
 
             getActivity().setProgressBarIndeterminateVisibility(false);
             mPullToRefreshLayout.setRefreshComplete(); //look into appropriate naming ~NM 06/12 01:20

@@ -62,7 +62,6 @@ public class CommentsFactory {
                     }
 
                     Comment comment = gson.fromJson(child.getAsJsonObject().get("data"), Comment.class);
-                    System.out.println("COMMENT BOD: " + comment.getBody());
 
                     comment.setChildren(buildComments(subChildren, new ArrayList<Comment>()));
                     comments.add(comment);
