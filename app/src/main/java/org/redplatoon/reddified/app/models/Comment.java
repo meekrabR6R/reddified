@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class Comment {
     String id, author, body, name, distinguished;
-    boolean saved, edited;
+    //boolean saved, edited;
     int score, ups, downs, gilded, created;
 
     @SerializedName("parent_id")
@@ -22,8 +22,8 @@ public class Comment {
     String flairText;
     @SerializedName("num_reports")
     String numReports;
-    @SerializedName("score_hidden")
-    boolean scoreHidden;
+    //@SerializedName("score_hidden")
+    //boolean scoreHidden;
     @SerializedName("created_utc")
     int createdUtc;
 
@@ -31,6 +31,10 @@ public class Comment {
 
     public void setChildren(ArrayList<Comment> chillens) {
         this.children = chillens;
+    }
+
+    public String getBody() {
+        return body;
     }
 
     public ArrayList<Comment> getChildren() {

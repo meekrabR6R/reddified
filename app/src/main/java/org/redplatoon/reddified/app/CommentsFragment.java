@@ -2,23 +2,30 @@ package org.redplatoon.reddified.app;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 
+import org.redplatoon.reddified.app.factories.CommentsFactory;
 import org.redplatoon.reddified.app.libs.ReddifiedFragment;
+import org.redplatoon.reddified.app.models.Comment;
+
+import java.util.ArrayList;
 
 /**
  * Comments
  * created by nmiano on 06/24/2014
  */
 public class CommentsFragment extends ReddifiedFragment implements CommentsAdapter.CommentsUpdater,
-                                                                   FutureCallback<JsonObject> {
+                                                                   FutureCallback<JsonArray> {
 
     private OnFragmentInteractionListener mListener;
     private String mCommentsLink;
+    private final ArrayList<Comment> mComments = new ArrayList<Comment>();
 
     public static CommentsFragment newInstance(String commentsLink) {
         CommentsFragment fragment = new CommentsFragment();
@@ -81,9 +88,25 @@ public class CommentsFragment extends ReddifiedFragment implements CommentsAdapt
      * @param result
      */
     @Override
-    public void onCompleted(Exception e, JsonObject result) {
-        getActivity().setProgressBarIndeterminateVisibility(false);
-        mPullToRefreshLayout.setRefreshComplete(); //look into appropriate naming ~NM 06/12 01:20
+    public void onCompleted(Exception e, JsonArray result) {
+
+        if (e != null) {
+            Log.d("HTTPERR", e.toString());
+        } else {
+            JsonObject comments = result.get(1).getAsJsonObject();
+                                     //.get("data")
+                                     //.getAsJsonObject();
+                                     //.get("children").getAsJsonArray();
+
+            System.out.println("POO: " + comments.get("kind"));
+            ArrayList<Comment> res = CommentsFactory.newCommentsList(comments);
+            mComments.addAll(res);
+
+            //JsonElement after = result.getAsJsonObject().get("data").getAsJsonObject().get("after");
+
+            getActivity().setProgressBarIndeterminateVisibility(false);
+            mPullToRefreshLayout.setRefreshComplete(); //look into appropriate naming ~NM 06/12 01:20
+        }
     }
 
     @Override
