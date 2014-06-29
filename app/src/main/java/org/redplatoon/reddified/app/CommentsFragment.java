@@ -25,6 +25,7 @@ public class CommentsFragment extends ReddifiedFragment implements CommentsAdapt
 
     private OnFragmentInteractionListener mListener;
     private String mCommentsLink;
+    private Activity mActivity;
     private final ArrayList<Comment> mComments = new ArrayList<Comment>();
 
     public static CommentsFragment newInstance(String commentsLink) {
@@ -49,6 +50,7 @@ public class CommentsFragment extends ReddifiedFragment implements CommentsAdapt
             mCommentsLink = getArguments().getString("commentsLink");
         }
 
+        mActivity = getActivity();
         setListAdapter(new CommentsAdapter(this, getActivity()));
     }
 
@@ -96,19 +98,18 @@ public class CommentsFragment extends ReddifiedFragment implements CommentsAdapt
             JsonObject comments = result.get(1).getAsJsonObject();
             ArrayList<Comment> res = CommentsFactory.newCommentsList(comments);
             mComments.addAll(res);
-           
+
             //TODO: rest of comment stuff
 
-            getActivity().setProgressBarIndeterminateVisibility(false);
+            mActivity.setProgressBarIndeterminateVisibility(false);
             mPullToRefreshLayout.setRefreshComplete(); //look into appropriate naming ~NM 06/12 01:20
         }
     }
 
     @Override
     public void updateComments() {
-        final Activity activity = getActivity();
-        activity.setProgressBarIndeterminateVisibility(true);
-        mRedditService.loadComments(mCommentsLink, activity, this);
+        mActivity.setProgressBarIndeterminateVisibility(true);
+        mRedditService.loadComments(mCommentsLink, mActivity, this);
     }
 
     public interface OnFragmentInteractionListener {

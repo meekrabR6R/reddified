@@ -11,6 +11,11 @@ android {
         versionName "1.0"
         testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
     }
+
+    packagingOptions {
+        exclude 'LICENSE.txt'
+    }
+
     buildTypes {
         release {
             runProguard false
@@ -59,10 +64,21 @@ dependencies {
     compile 'com.android.support:appcompat-v7:+'
     compile 'com.koushikdutta.ion:ion:+'
     compile 'com.android.support:support-v13:+'
-    compile 'com.android.support:support-v4:+'
+    compile 'com.android.support:support-v4:19.0.1'
     compile 'com.github.chrisbanes.actionbarpulltorefresh:library:+'
     compile "com.mixpanel.android:mixpanel-android:4.2.1@aar"
-    androidTestCompile files('libs/espresso-contrib-1.1-bundled.jar')
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    //androidTestCompile files('libs/espresso-contrib-1.1-bundled.jar')
+    //compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.jakewharton.espresso:espresso:1.1-r3') {
+        exclude group: 'org.hamcrest:hamcrest-core:1.1'
+        exclude group: 'org.hamcrest:hamcrest-library:1.1'
+        exclude group: 'org.hamcrest:hamcrest-integration:1.1'
+    }
+
+    //androidTestCompile('com.jakewharton.espresso:espresso-support-v4:1.1-r3') {
+    //    exclude group: 'com.android.support:support-v4:19.0.1'
+    //}
+
+    androidTestCompile "org.mockito:mockito-core:1.9.5"
 }
 

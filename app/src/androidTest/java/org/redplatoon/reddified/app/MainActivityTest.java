@@ -6,19 +6,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.ListView;
 
-import static com.google.android.apps.common.testing.ui.espresso.Espresso.onData;
-import static com.google.android.apps.common.testing.ui.espresso.Espresso.onView;
-import static com.google.android.apps.common.testing.ui.espresso.action.ViewActions.click;
-import static com.google.android.apps.common.testing.ui.espresso.assertion.ViewAssertions.matches;
-import static com.google.android.apps.common.testing.ui.espresso.contrib.DrawerActions.closeDrawer;
-import static com.google.android.apps.common.testing.ui.espresso.contrib.DrawerActions.openDrawer;
-import static com.google.android.apps.common.testing.ui.espresso.contrib.DrawerMatchers.isClosed;
-import static com.google.android.apps.common.testing.ui.espresso.contrib.DrawerMatchers.isOpen;
-import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMatchers.withId;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-
 /**
  * Created by nmiano on 6/5/14 2:06 PM for Reddified
  */
@@ -48,6 +35,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         assertEquals(true, mActivity.getActionBar().isShowing());
     }
 
+    /*
     public void testDrawerToggle() throws Exception {
         onView(withId(R.id.drawer)).check(matches(isClosed()));
         openDrawer(R.id.drawer);
@@ -72,4 +60,5 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         // The text view will now display "You picked: Pickle"
         //onView(withId(R.id.drawer_text_view)).check(matches(withText("You picked: " + rowContents)));
     }
+    */
 }
