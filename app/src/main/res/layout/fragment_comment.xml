@@ -2,7 +2,8 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="6dp">
 
     <TextView
         android:id="@+id/author"
@@ -11,8 +12,32 @@
         android:layout_alignWithParentIfMissing="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:layout_marginRight="5dp"
         android:gravity="left"
-        android:text="2"
+        android:textColor="#c0c0c0"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/points"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="5dp"
+        android:gravity="left"
+        android:layout_toRightOf="@id/author"
+        android:textColor="#c0c0c0"
+        android:textSize="10sp" />
+
+
+    <TextView
+        android:id="@+id/ago"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_alignParentTop="true"
+        android:gravity="left"
+        android:layout_toRightOf="@id/points"
         android:textColor="#c0c0c0"
         android:textSize="10sp" />
 

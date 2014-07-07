@@ -1,5 +1,8 @@
 package org.redplatoon.reddified.app.models;
 
+import android.text.Html;
+import android.text.Spanned;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -33,12 +36,20 @@ public class Comment {
         this.children = chillens;
     }
 
-    public String getBody() {
-        return body;
+    public Spanned getBody() {
+        return Html.fromHtml(body);
     }
 
     public String getAuthor() {
         return author;
+    }
+
+    public String getAgoText() {
+        return String.valueOf(created);
+    }
+
+    public String getPoints() {
+        return String.valueOf(ups - downs) + " points";
     }
 
     public ArrayList<Comment> getChildren() {
