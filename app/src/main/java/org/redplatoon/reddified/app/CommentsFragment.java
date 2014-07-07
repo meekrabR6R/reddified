@@ -26,6 +26,7 @@ public class CommentsFragment extends ReddifiedFragment implements CommentsAdapt
     private OnFragmentInteractionListener mListener;
     private String mCommentsLink;
     private Activity mActivity;
+    private CommentsAdapter mCommentsAdapter;
     private final ArrayList<Comment> mComments = new ArrayList<Comment>();
 
     public static CommentsFragment newInstance(String commentsLink) {
@@ -52,6 +53,7 @@ public class CommentsFragment extends ReddifiedFragment implements CommentsAdapt
 
         mActivity = getActivity();
         setListAdapter(new CommentsAdapter(this, getActivity()));
+        mCommentsAdapter = (CommentsAdapter) getListAdapter();
     }
 
 
@@ -99,7 +101,7 @@ public class CommentsFragment extends ReddifiedFragment implements CommentsAdapt
             ArrayList<Comment> res = CommentsFactory.newCommentsList(comments);
             mComments.addAll(res);
 
-            //TODO: rest of comment stuff
+            mCommentsAdapter.update(mComments);
 
             mActivity.setProgressBarIndeterminateVisibility(false);
             mPullToRefreshLayout.setRefreshComplete(); //look into appropriate naming ~NM 06/12 01:20

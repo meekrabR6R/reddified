@@ -37,6 +37,10 @@ public class Comment {
         return body;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
     public ArrayList<Comment> getChildren() {
         return children;
     }

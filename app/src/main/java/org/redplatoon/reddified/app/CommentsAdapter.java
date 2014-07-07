@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import org.redplatoon.reddified.app.models.Comment;
 import org.redplatoon.reddified.app.services.MediaService;
@@ -46,7 +47,6 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
         return position;
     }
 
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -54,16 +54,31 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
             mLayoutInflater = (LayoutInflater) mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            convertView = mLayoutInflater.inflate(R.layout.fragment_post, parent, false);
+            convertView = mLayoutInflater.inflate(R.layout.fragment_comment, parent, false);
         }
-
+        Comment currComment = mComments.get(position);
         ViewHolder holder = new ViewHolder();
+
+        holder.author = (TextView) convertView.findViewById(R.id.author);
+        holder.author.setText(currComment.getAuthor());
+
+        holder.body = (TextView) convertView.findViewById(R.id.body);
+        holder.body.setText(currComment.getBody());
 
         convertView.setTag(holder);
 
         return convertView;
     }
 
+    public void update(ArrayList<Comment> comments) {
+        mComments.clear();
+        mComments.addAll(comments);
+        System.out.println("LENGTH: " + mComments.size());
+        notifyDataSetChanged();
+    }
+
     static class ViewHolder {
+        TextView author;
+        TextView body;
     }
 }

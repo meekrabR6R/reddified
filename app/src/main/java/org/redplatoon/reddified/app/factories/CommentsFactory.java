@@ -29,7 +29,7 @@ public class CommentsFactory {
     }
 
     /**
-     * Recursively creates comments tree
+     * Recursively creates arraylist of comments trees
      * @param children
      * @return
      */
@@ -62,7 +62,6 @@ public class CommentsFactory {
                     }
 
                     Comment comment = gson.fromJson(child.getAsJsonObject().get("data"), Comment.class);
-
                     comment.setChildren(buildComments(subChildren, new ArrayList<Comment>()));
                     comments.add(comment);
                 }
