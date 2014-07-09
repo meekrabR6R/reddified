@@ -1,0 +1,3 @@
+[submodule "app/libs/treeview"]
+	path = app/libs/treeview
+	url = git://github.com/Polidea/tree-view-list-android
