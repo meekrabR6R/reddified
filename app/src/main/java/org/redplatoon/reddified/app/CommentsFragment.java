@@ -34,6 +34,7 @@ public class CommentsFragment extends ReddifiedFragment implements CommentsAdapt
         Bundle args = new Bundle();
         args.putString("commentsLink", commentsLink);
         fragment.setArguments(args);
+
         return fragment;
     }
 

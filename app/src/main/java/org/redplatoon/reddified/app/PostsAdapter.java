@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import org.redplatoon.reddified.app.models.Post;
 import org.redplatoon.reddified.app.services.MediaService;
 

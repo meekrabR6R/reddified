@@ -32,7 +32,9 @@
 
     <color name="reddit_blue">#cee3f8</color>
     <color name="white">#FFFFFF</color>
+    <color name="comment_metatext">#c0c0c0</color>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="more_comments">Show Replies</string>
 
 </resources>

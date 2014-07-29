@@ -71,6 +71,18 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
         holder.body = (TextView) convertView.findViewById(R.id.body);
         holder.body.setText(currComment.getBody());
 
+        TextView replies = (TextView) convertView.findViewById(R.id.more_comments);
+
+        if (currComment.hasChildren())
+            replies.setVisibility(View.GONE);
+
+        replies.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         convertView.setTag(holder);
 
         return convertView;

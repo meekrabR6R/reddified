@@ -11,12 +11,13 @@ import java.util.ArrayList;
  * Created by nmiano on 6/10/14 9:31 PM for Reddified
  */
 public class Comment {
-    String id, author, body, name, distinguished;
+    String author, body, name, distinguished;
+    private String id;
     //boolean saved, edited;
     int score, ups, downs, gilded, created;
 
     @SerializedName("parent_id")
-    String parentId;
+    private String parentId;
     @SerializedName("body_html")
     String bodyHtml;
     @SerializedName("link_id")
@@ -32,8 +33,20 @@ public class Comment {
 
     private ArrayList<Comment> children = new ArrayList<Comment>();
 
+    public String getParentId() {
+        return parentId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
     public void setChildren(ArrayList<Comment> chillens) {
         this.children = chillens;
+    }
+
+    public boolean hasChildren() {
+        return children.size() > 0;
     }
 
     public Spanned getBody() {

@@ -54,6 +54,10 @@ android {
     }
 
     sourceSets {
+        main {
+            res { srcDir 'libs/treeview/src' }
+        }
+
         instrumentTest {
             java.srcDirs = ['androidTest/java']
         }
@@ -62,13 +66,12 @@ android {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:+'
-    compile 'com.koushikdutta.ion:ion:+'
+    compile 'com.koushikdutta.ion:ion:1.2.7'
     compile 'com.android.support:support-v13:+'
     compile 'com.android.support:support-v4:19.0.1'
     compile 'com.github.chrisbanes.actionbarpulltorefresh:library:+'
     compile "com.mixpanel.android:mixpanel-android:4.2.1@aar"
-    //androidTestCompile files('libs/espresso-contrib-1.1-bundled.jar')
-    //compile fileTree(dir: 'libs', include: ['*.jar'])
+
     androidTestCompile('com.jakewharton.espresso:espresso:1.1-r3') {
         exclude group: 'org.hamcrest:hamcrest-core:1.1'
         exclude group: 'org.hamcrest:hamcrest-library:1.1'
